@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lista de Camping Interactiva</title>
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⛺</text></svg>" />
+    <link rel="stylesheet" href="/src/style.css" />
+  </head>
+  <body>
+    <div id="app">
+      <header id="app-header">
+        <div class="header-left">
+          <h1>⛺ Lista de Camping</h1>
+        </div>
+        <div class="header-center">
+          <div id="progress-bar-container"></div>
+        </div>
+        <div class="header-right">
+          <button id="print-btn" class="icon-btn" title="Imprimir lista" aria-label="Imprimir lista">🖨️</button>
+          <button id="reset-btn" class="icon-btn" title="Reiniciar todo" aria-label="Reiniciar todo">🔄</button>
+          <div id="day-night-toggle"></div>
+        </div>
+      </header>
+
+      <main id="app-main">
+        <div id="map-container">
+          <div id="campsite-map"></div>
+        </div>
+        <div id="sidebar-overlay"></div>
+        <aside id="sidebar"></aside>
+      </main>
+    </div>
+
+    <div id="reset-modal" class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title" hidden>
+      <div class="modal-content">
+        <h2 id="modal-title">¿Reiniciar lista?</h2>
+        <p>Se perderán todos los items marcados. Esta acción no se puede deshacer.</p>
+        <div class="modal-actions">
+          <button id="modal-cancel" class="btn btn-secondary">Cancelar</button>
+          <button id="modal-confirm" class="btn btn-danger">Reiniciar</button>
+        </div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>
