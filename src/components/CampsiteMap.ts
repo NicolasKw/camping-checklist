@@ -68,6 +68,12 @@ export class CampsiteMap {
     <filter id="glowRed" x="-30%" y="-30%" width="160%" height="160%">
       <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#9b1c1c" flood-opacity="0.75"/>
     </filter>
+    <filter id="glowCamara" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#1a6040" flood-opacity="0.78"/>
+    </filter>
+    <filter id="glowQuidditch" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#3a6a10" flood-opacity="0.75"/>
+    </filter>
 
     <clipPath id="skyClip">
       <rect x="0" y="0" width="900" height="280"/>
@@ -226,6 +232,8 @@ export class CampsiteMap {
     <path d="M 680 440 Q 670 460 660 490"/>
     <!-- Cauldron to forest path -->
     <path d="M 500 400 Q 620 420 720 390"/>
+    <!-- Cauldron to chamber -->
+    <path d="M 450 440 L 450 505"/>
   </g>
   <!-- Stone texture on paths -->
   <g stroke="#1e1828" stroke-width="3" fill="none" opacity="0.35" stroke-linecap="round" stroke-dasharray="6,10">
@@ -233,6 +241,7 @@ export class CampsiteMap {
     <path d="M 445 295 L 450 350"/>
     <path d="M 498 390 Q 550 390 595 385"/>
     <path d="M 402 390 Q 350 388 295 380"/>
+    <path d="M 450 440 L 450 505"/>
   </g>
 
   <!-- ═══ ZONE: TIENDA MÁGICA (carpa) ═══ -->
@@ -521,6 +530,121 @@ export class CampsiteMap {
     </g>
   </g>
 
+  <!-- ═══ ZONE: CAMPO DE QUIDDITCH (quidditch) ═══ -->
+  <g id="zone-quidditch" class="zone-area" tabindex="0" role="button"
+     aria-label="Campo de Quidditch — click para ver items" data-zone="quidditch" data-filter="glowQuidditch">
+    <g class="zone-fill-group">
+      <!-- Ground shadow beneath field -->
+      <ellipse cx="338" cy="570" rx="62" ry="10" fill="#030208" opacity="0.50"/>
+      <!-- Field base — dark turf oval -->
+      <ellipse cx="338" cy="532" rx="56" ry="44" fill="#0d1a07" opacity="0.94" class="zone-fill"/>
+      <!-- Field volume layer — subtle grass texture -->
+      <ellipse cx="338" cy="530" rx="50" ry="39" fill="#111f08" opacity="0.88" class="zone-fill"/>
+      <!-- Field inner green surface -->
+      <ellipse cx="338" cy="529" rx="44" ry="34" fill="#142508" opacity="0.92" class="zone-fill"/>
+      <!-- Field boundary line -->
+      <ellipse cx="338" cy="529" rx="44" ry="34" fill="none" stroke="#3a6a10" stroke-width="1.2" opacity="0.60"/>
+      <!-- Center circle -->
+      <ellipse cx="338" cy="529" rx="14" ry="11" fill="none" stroke="#3a6a10" stroke-width="1" opacity="0.50"/>
+      <!-- Center spot -->
+      <circle cx="338" cy="529" r="2.5" fill="#3a6a10" opacity="0.55"/>
+      <!-- Midfield line (longitudinal) -->
+      <line x1="294" y1="529" x2="382" y2="529" stroke="#3a6a10" stroke-width="0.9" opacity="0.40"/>
+      <!-- Midfield line (lateral) -->
+      <line x1="338" y1="496" x2="338" y2="562" stroke="#3a6a10" stroke-width="0.9" opacity="0.35"/>
+      <!-- Left goal post (3 hoops) -->
+      <rect x="291" y="510" width="4" height="38" rx="2" fill="#1e3a0a" opacity="0.90"/>
+      <ellipse cx="293" cy="506" rx="7" ry="5" fill="none" stroke="#3a6a10" stroke-width="2" opacity="0.82"/>
+      <ellipse cx="293" cy="517" rx="6" ry="4" fill="none" stroke="#3a6a10" stroke-width="1.8" opacity="0.72"/>
+      <ellipse cx="293" cy="527" rx="5.5" ry="3.5" fill="none" stroke="#3a6a10" stroke-width="1.5" opacity="0.62"/>
+      <!-- Right goal post (3 hoops) -->
+      <rect x="384" y="510" width="4" height="38" rx="2" fill="#1e3a0a" opacity="0.90"/>
+      <ellipse cx="386" cy="506" rx="7" ry="5" fill="none" stroke="#3a6a10" stroke-width="2" opacity="0.82"/>
+      <ellipse cx="386" cy="517" rx="6" ry="4" fill="none" stroke="#3a6a10" stroke-width="1.8" opacity="0.72"/>
+      <ellipse cx="386" cy="527" rx="5.5" ry="3.5" fill="none" stroke="#3a6a10" stroke-width="1.5" opacity="0.62"/>
+      <!-- Broom silhouette (diagonal, flying) -->
+      <line x1="305" y1="497" x2="352" y2="515" stroke="#5a3a10" stroke-width="3" stroke-linecap="round" opacity="0.78"/>
+      <!-- Broom bristles -->
+      <line x1="352" y1="515" x2="358" y2="511" stroke="#6a4a18" stroke-width="2" stroke-linecap="round" opacity="0.65"/>
+      <line x1="352" y1="515" x2="359" y2="515" stroke="#6a4a18" stroke-width="1.5" stroke-linecap="round" opacity="0.60"/>
+      <line x1="352" y1="515" x2="357" y2="519" stroke="#6a4a18" stroke-width="1.5" stroke-linecap="round" opacity="0.55"/>
+      <circle cx="305" cy="497" r="2" fill="#7a5020" opacity="0.60"/>
+      <!-- Golden Snitch -->
+      <circle cx="364" cy="500" r="5" fill="#c9a84c" opacity="0.82"/>
+      <circle cx="364" cy="500" r="3" fill="#e8c870" opacity="0.70"/>
+      <!-- Snitch wings (tiny) -->
+      <ellipse cx="356" cy="499" rx="5" ry="2.5" fill="#c9a84c" opacity="0.45" transform="rotate(-15, 356, 499)"/>
+      <ellipse cx="372" cy="499" rx="5" ry="2.5" fill="#c9a84c" opacity="0.45" transform="rotate(15, 372, 499)"/>
+      <!-- Snitch glow pulse -->
+      <circle cx="364" cy="500" r="8" fill="#c9a84c" opacity="0.12">
+        <animate attributeName="r" values="8;12;8" dur="2.4s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="0.12;0.22;0.12" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Crowd stands suggestion (top arc) -->
+      <path d="M 286 527 Q 290 490 338 482 Q 386 490 390 527"
+            fill="#0c1806" opacity="0.70" stroke="#1e3a0a" stroke-width="1"/>
+      <!-- Stand detail rows -->
+      <path d="M 290 520 Q 314 500 338 496 Q 362 500 386 520"
+            fill="none" stroke="#1e3a0a" stroke-width="0.8" opacity="0.40"/>
+      <path d="M 292 512 Q 315 494 338 490 Q 361 494 384 512"
+            fill="none" stroke="#1e3a0a" stroke-width="0.8" opacity="0.30"/>
+    </g>
+    <text x="338" y="592" text-anchor="middle" class="zone-label"
+          fill="#3a6a10" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🧹 Campo de Quidditch</text>
+    <g id="badge-quidditch" transform="translate(395, 458)">
+      <circle r="16" class="zone-badge-circle" fill="#3a6a10"/>
+      <text text-anchor="middle" dy="4" class="zone-badge-text">0/6</text>
+    </g>
+  </g>
+
+  <!-- ═══ ZONE: CÁMARA SECRETA (camara) ═══ -->
+  <g id="zone-camara" class="zone-area" tabindex="0" role="button"
+     aria-label="Cámara Secreta — click para ver items" data-zone="camara" data-filter="glowCamara">
+    <g class="zone-fill-group">
+      <!-- Stone floor shadow -->
+      <ellipse cx="450" cy="583" rx="64" ry="12" fill="#030208" opacity="0.50"/>
+      <!-- Outer stone arch -->
+      <path d="M 392 582 L 392 538 Q 392 510 450 510 Q 508 510 508 538 L 508 582 Z"
+            fill="#0e1a10" opacity="0.92" class="zone-fill"/>
+      <!-- Inner arch depth -->
+      <path d="M 402 582 L 402 541 Q 402 520 450 520 Q 498 520 498 541 L 498 582 Z"
+            fill="#080f08" opacity="0.96" class="zone-fill"/>
+      <!-- Abyss within -->
+      <path d="M 412 582 L 412 545 Q 412 528 450 528 Q 488 528 488 545 L 488 582 Z"
+            fill="#030508" opacity="0.98" class="zone-fill"/>
+      <!-- Stone block texture on arch sides -->
+      <line x1="392" y1="548" x2="508" y2="548" stroke="#1a2a1a" stroke-width="1.5" opacity="0.38"/>
+      <line x1="392" y1="563" x2="508" y2="563" stroke="#1a2a1a" stroke-width="1.5" opacity="0.38"/>
+      <line x1="418" y1="538" x2="418" y2="582" stroke="#1a2a1a" stroke-width="1" opacity="0.28"/>
+      <line x1="482" y1="538" x2="482" y2="582" stroke="#1a2a1a" stroke-width="1" opacity="0.28"/>
+      <!-- Serpent carvings on arch sides -->
+      <path d="M 393 542 Q 385 552 393 562 Q 401 572 393 582"
+            fill="none" stroke="#2a6040" stroke-width="2.5" stroke-linecap="round" opacity="0.58"/>
+      <path d="M 507 542 Q 515 552 507 562 Q 499 572 507 582"
+            fill="none" stroke="#2a6040" stroke-width="2.5" stroke-linecap="round" opacity="0.58"/>
+      <!-- Keystone serpent eyes -->
+      <ellipse cx="443" cy="517" rx="3" ry="2.2" fill="#aaff88" opacity="0.52"/>
+      <ellipse cx="457" cy="517" rx="3" ry="2.2" fill="#aaff88" opacity="0.52"/>
+      <!-- Slytherin crest on keystone -->
+      <ellipse cx="450" cy="523" rx="14" ry="10" fill="#0d2018" opacity="0.75"/>
+      <path d="M 443 519 Q 450 515 457 519 Q 453 527 450 529 Q 447 527 443 519 Z"
+            fill="#1a4028" opacity="0.60"/>
+      <!-- Eerie green glow from the abyss -->
+      <ellipse cx="450" cy="565" rx="28" ry="16" fill="#0a3020" opacity="0.45"/>
+      <ellipse cx="450" cy="574" rx="38" ry="9" fill="#0a2818" opacity="0.60"/>
+      <!-- Rune markers on stone -->
+      <text x="405" y="558" fill="#2a6040" font-size="9" opacity="0.40" font-family="serif">ᚢ</text>
+      <text x="487" y="558" fill="#2a6040" font-size="9" opacity="0.40" font-family="serif">ᚾ</text>
+    </g>
+    <text x="450" y="607" text-anchor="middle" class="zone-label"
+          fill="#2a7050" font-size="13" font-weight="700" font-family="'Cinzel', serif"
+          letter-spacing="0.04em">🐍 Cámara Secreta</text>
+    <g id="badge-camara" transform="translate(510, 508)">
+      <circle r="16" class="zone-badge-circle" fill="#1a3828"/>
+      <text text-anchor="middle" dy="4" class="zone-badge-text">0/6</text>
+    </g>
+  </g>
+
   <!-- ═══ DECORATIVE DETAILS ═══ -->
   <!-- Floating magical orbs near cauldron -->
   <circle cx="408" cy="355" r="4" fill="#7b00ff" opacity="0.35">
@@ -624,6 +748,8 @@ export class CampsiteMap {
       higiene: 'glowBlue',
       senderos: 'glowGreen',
       botiquin: 'glowTeal',
+      quidditch: 'glowQuidditch',
+      camara: 'glowCamara',
     };
     return filterMap[zoneId] ?? 'glowGold';
   }
