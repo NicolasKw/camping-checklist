@@ -23,318 +23,557 @@ export class CampsiteMap {
 
   private buildSVG(): string {
     return `
-<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa interactivo del campamento">
+<svg viewBox="0 0 900 700" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Mapa mágico del campamento de Hogwarts">
   <defs>
-    <!-- Sky gradient -->
     <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
       <stop offset="0%" stop-color="var(--sky-top)" />
       <stop offset="100%" stop-color="var(--sky-bottom)" />
     </linearGradient>
-
-    <!-- Ground texture -->
     <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#7daa7d" />
-      <stop offset="100%" stop-color="#5a8a5a" />
+      <stop offset="0%" stop-color="#141e08" />
+      <stop offset="100%" stop-color="#0a1205" />
     </linearGradient>
-    [data-theme="night"] #groundGrad stop:nth-child(1) { stop-color: #2d4a2d; }
+    <linearGradient id="lakeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#060318" />
+      <stop offset="100%" stop-color="#0a0528" />
+    </linearGradient>
+    <radialGradient id="moonGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#f5f0c8" stop-opacity="0.15" />
+      <stop offset="100%" stop-color="#f5f0c8" stop-opacity="0" />
+    </radialGradient>
+    <radialGradient id="candleGlow" cx="50%" cy="30%" r="70%">
+      <stop offset="0%" stop-color="#c8802a" stop-opacity="0.25" />
+      <stop offset="100%" stop-color="#c8802a" stop-opacity="0" />
+    </radialGradient>
 
-    <!-- Shadow filter -->
-    <filter id="dropShadowOlive" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#6b7c45" flood-opacity="0.7"/>
+    <!-- Zone filters — magical glows -->
+    <filter id="glowGold" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#c9a84c" flood-opacity="0.75"/>
     </filter>
-    <filter id="dropShadowOrange" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="8" flood-color="#e07b39" flood-opacity="0.8"/>
+    <filter id="glowPurple" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="10" flood-color="#7b2fbf" flood-opacity="0.80"/>
     </filter>
-    <filter id="dropShadowKhaki" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#c8a84b" flood-opacity="0.7"/>
+    <filter id="glowAmber" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#c89028" flood-opacity="0.75"/>
     </filter>
-    <filter id="dropShadowBrown" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#8b6347" flood-opacity="0.7"/>
+    <filter id="glowBlue" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#3a6ab0" flood-opacity="0.75"/>
     </filter>
-    <filter id="dropShadowBlue" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#4a7fa5" flood-opacity="0.7"/>
+    <filter id="glowGreen" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="9" flood-color="#1a8030" flood-opacity="0.70"/>
     </filter>
-    <filter id="dropShadowGreen" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#4a8c5c" flood-opacity="0.7"/>
+    <filter id="glowTeal" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#1e8060" flood-opacity="0.75"/>
     </filter>
-    <filter id="dropShadowRed" x="-20%" y="-20%" width="140%" height="140%">
-      <feDropShadow dx="0" dy="2" stdDeviation="6" flood-color="#c0392b" flood-opacity="0.7"/>
+    <filter id="glowRed" x="-30%" y="-30%" width="160%" height="160%">
+      <feDropShadow dx="0" dy="0" stdDeviation="8" flood-color="#9b1c1c" flood-opacity="0.75"/>
     </filter>
 
-    <!-- Clip for birds -->
     <clipPath id="skyClip">
-      <rect x="0" y="0" width="900" height="260"/>
+      <rect x="0" y="0" width="900" height="280"/>
     </clipPath>
   </defs>
 
-  <!-- === BACKGROUND === -->
-  <!-- Sky -->
-  <rect width="900" height="700" fill="url(#skyGrad)" rx="12"/>
+  <!-- ═══ SKY ═══ -->
+  <rect width="900" height="700" fill="url(#skyGrad)" rx="10"/>
 
-  <!-- Stars (night mode) -->
+  <!-- Stars -->
   <g class="stars-group">
     ${this.buildStars()}
   </g>
 
-  <!-- Moon (night mode) -->
-  <circle cx="820" cy="60" r="28" fill="#f5f0c8" opacity="var(--moon-opacity)" class="moon" style="transition: opacity var(--transition-speed) ease;"/>
-  <circle cx="832" cy="50" r="22" fill="var(--sky-top)" opacity="var(--moon-opacity)" class="moon" style="transition: opacity var(--transition-speed) ease, fill var(--transition-speed) ease;"/>
+  <!-- Moon -->
+  <circle cx="820" cy="58" r="40" fill="url(#moonGlow)" opacity="var(--moon-opacity)"/>
+  <circle cx="820" cy="58" r="26" fill="#f8f2d0" opacity="var(--moon-opacity)" style="transition: opacity var(--transition-speed) ease;"/>
+  <circle cx="832" cy="48" r="20" fill="var(--sky-top)" opacity="var(--moon-opacity)" style="transition: opacity var(--transition-speed) ease, fill var(--transition-speed) ease;"/>
 
-  <!-- Ground -->
-  <ellipse cx="450" cy="560" rx="430" ry="160" fill="#6aab6a" opacity="0.7"/>
-  <rect x="0" y="460" width="900" height="240" fill="#5a9a5a" rx="0"/>
-  <rect x="0" y="460" width="900" height="240" fill="url(#groundGrad)" opacity="0.5"/>
+  <!-- ═══ HOGWARTS CASTLE ═══ -->
+  <g id="hogwarts-castle" opacity="0.92">
+    <!-- Outer walls suggestion -->
+    <rect x="295" y="195" width="345" height="20" fill="#06040e" opacity="0.6"/>
 
-  <!-- Trees decoration top -->
-  ${this.buildTrees()}
+    <!-- Main Great Hall body -->
+    <rect x="315" y="145" width="305" height="55" fill="#08061a"/>
+    <rect x="322" y="152" width="291" height="45" fill="#0c0a22" opacity="0.7"/>
 
-  <!-- Paths between zones -->
-  <g stroke="var(--path-color)" stroke-width="6" fill="none" opacity="0.6" stroke-linecap="round">
-    <path d="M 310 360 Q 350 400 410 420"/>
-    <path d="M 560 380 Q 520 410 510 430"/>
-    <path d="M 440 300 L 440 340"/>
-    <path d="M 210 450 Q 300 460 380 470"/>
-    <path d="M 680 350 Q 700 400 680 450"/>
-    <path d="M 200 340 Q 240 370 300 370"/>
+    <!-- Battlements on main hall -->
+    ${this.buildBattlements(315, 138, 305, 12, 18)}
+
+    <!-- Far left tower -->
+    <rect x="295" y="88" width="26" height="60" fill="#07051a"/>
+    <polygon points="295,88 308,68 321,88" fill="#09071e"/>
+    <rect x="300" y="100" width="6" height="9" rx="1" fill="#c8902a" opacity="0.55"/>
+    <rect x="310" y="100" width="6" height="9" rx="1" fill="#c8902a" opacity="0.45"/>
+
+    <!-- Left tower -->
+    <rect x="348" y="58" width="36" height="90" fill="#08061a"/>
+    <polygon points="348,58 366,34 384,58" fill="#0b091e"/>
+    <rect x="354" y="72" width="7" height="11" rx="1" fill="#c8902a" opacity="0.65"/>
+    <rect x="367" y="72" width="7" height="11" rx="1" fill="#c8902a" opacity="0.60"/>
+    <rect x="354" y="96" width="7" height="10" rx="1" fill="#c8902a" opacity="0.50"/>
+    <rect x="367" y="96" width="7" height="10" rx="1" fill="#c8902a" opacity="0.45"/>
+    <!-- Left tower battlements -->
+    ${this.buildBattlements(348, 52, 36, 8, 10)}
+
+    <!-- Central main tower (tallest) -->
+    <rect x="430" y="22" width="46" height="125" fill="#09071c"/>
+    <polygon points="430,22 453,2 476,22" fill="#0c0a20"/>
+    <!-- Pennant -->
+    <polygon points="453,2 453,18 465,10" fill="#7b0000" opacity="0.8"/>
+    <rect x="437" y="38" width="8" height="13" rx="1" fill="#c8902a" opacity="0.70"/>
+    <rect x="452" y="38" width="8" height="13" rx="1" fill="#c8902a" opacity="0.75"/>
+    <rect x="462" y="38" width="8" height="13" rx="1" fill="#c8902a" opacity="0.65"/>
+    <rect x="437" y="65" width="8" height="12" rx="1" fill="#c8902a" opacity="0.60"/>
+    <rect x="452" y="65" width="8" height="12" rx="1" fill="#c8902a" opacity="0.65"/>
+    <rect x="462" y="65" width="8" height="12" rx="1" fill="#c8902a" opacity="0.55"/>
+    <rect x="437" y="92" width="8" height="11" rx="1" fill="#c8902a" opacity="0.50"/>
+    <rect x="452" y="92" width="8" height="11" rx="1" fill="#c8902a" opacity="0.55"/>
+    <!-- Central battlements -->
+    ${this.buildBattlements(430, 16, 46, 9, 12)}
+
+    <!-- Right tower -->
+    <rect x="542" y="50" width="36" height="98" fill="#08061a"/>
+    <polygon points="542,50 560,28 578,50" fill="#0b091e"/>
+    <rect x="548" y="64" width="7" height="11" rx="1" fill="#c8902a" opacity="0.60"/>
+    <rect x="561" y="64" width="7" height="11" rx="1" fill="#c8902a" opacity="0.65"/>
+    <rect x="548" y="90" width="7" height="10" rx="1" fill="#c8902a" opacity="0.48"/>
+    <rect x="561" y="90" width="7" height="10" rx="1" fill="#c8902a" opacity="0.52"/>
+    ${this.buildBattlements(542, 44, 36, 8, 10)}
+
+    <!-- Astronomy tower (circular top) -->
+    <rect x="592" y="40" width="28" height="108" fill="#07051a"/>
+    <circle cx="606" cy="40" r="16" fill="#08061c"/>
+    <polygon points="592,40 606,18 620,40" fill="#0b091e"/>
+    <rect x="597" y="58" width="7" height="10" rx="1" fill="#c8902a" opacity="0.60"/>
+    <rect x="610" y="58" width="7" height="10" rx="1" fill="#c8902a" opacity="0.55"/>
+    <rect x="597" y="82" width="7" height="9" rx="1" fill="#c8902a" opacity="0.45"/>
+    <rect x="610" y="82" width="7" fill="#c8902a" height="9" rx="1" opacity="0.42"/>
+
+    <!-- Great Hall windows -->
+    <rect x="330" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.50"/>
+    <rect x="352" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.55"/>
+    <rect x="374" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.48"/>
+    <rect x="430" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.52"/>
+    <rect x="452" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.58"/>
+    <rect x="474" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.50"/>
+    <rect x="510" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.55"/>
+    <rect x="532" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.48"/>
+    <rect x="554" y="158" width="10" height="16" rx="2" fill="#c8902a" opacity="0.52"/>
+
+    <!-- Castle gate/entrance -->
+    <rect x="436" y="168" width="36" height="32" rx="18" fill="#04030a"/>
+    <rect x="440" y="172" width="28" height="28" rx="14" fill="#04030a"/>
+
+    <!-- Ambient warm glow from castle windows -->
+    <ellipse cx="453" cy="175" rx="140" ry="45" fill="url(#candleGlow)"/>
   </g>
 
-  <!-- Ambient birds group -->
+  <!-- ═══ BLACK LAKE ═══ -->
+  <g id="black-lake">
+    <ellipse cx="130" cy="240" rx="128" ry="85" fill="url(#lakeGrad)" opacity="0.95"/>
+    <ellipse cx="125" cy="235" rx="108" ry="70" fill="#08041e" opacity="0.8"/>
+    <!-- Subtle ripples -->
+    <ellipse cx="118" cy="248" rx="68" ry="18" fill="none" stroke="#1a1050" stroke-width="1" opacity="0.5"/>
+    <ellipse cx="125" cy="260" rx="88" ry="24" fill="none" stroke="#140c40" stroke-width="1" opacity="0.35"/>
+    <!-- Castle reflection (blurry) -->
+    <rect x="380" y="248" width="110" height="30" fill="#0d0a24" opacity="0.3" transform="skewX(-15) translate(-260, 0)"/>
+    <!-- Moon reflection -->
+    <ellipse cx="148" cy="255" rx="12" ry="5" fill="#f5f0c8" opacity="0.12"/>
+    <!-- Lake shimmer -->
+    <line x1="75" y1="235" x2="100" y2="230" stroke="#2a1a60" stroke-width="1.5" opacity="0.4"/>
+    <line x1="115" y1="244" x2="145" y2="238" stroke="#2a1a60" stroke-width="1.5" opacity="0.35"/>
+    <line x1="158" y1="252" x2="178" y2="246" stroke="#2a1a60" stroke-width="1.5" opacity="0.3"/>
+    <text x="130" y="298" text-anchor="middle" fill="#2a1a60" font-size="10" font-family="'Cinzel', serif" font-style="italic" opacity="0.55" letter-spacing="0.1em">Lago Negro</text>
+  </g>
+
+  <!-- Ambient birds/owls group -->
   <g id="ambient-birds" clip-path="url(#skyClip)"></g>
 
-  <!-- === ZONES === -->
+  <!-- ═══ GROUND ═══ -->
+  <rect x="0" y="380" width="900" height="320" fill="#0e1608" rx="0"/>
+  <rect x="0" y="380" width="900" height="320" fill="url(#groundGrad)" opacity="0.7"/>
+  <!-- Ground horizon line -->
+  <path d="M 0 380 Q 200 372 450 376 Q 680 380 900 374" fill="none" stroke="#1a2a0a" stroke-width="2" opacity="0.5"/>
 
-  <!-- CARPA (top center) -->
-  <g id="zone-carpa" class="zone-area" tabindex="0" role="button" aria-label="Zona Carpa - click para ver items"
-     data-zone="carpa" data-filter="dropShadowOlive">
+  <!-- ═══ FORBIDDEN FOREST ═══ -->
+  <g id="forbidden-forest">
+    <!-- Dense forest mass -->
+    <ellipse cx="845" cy="300" rx="75" ry="220" fill="#030805" opacity="0.97"/>
+    <ellipse cx="870" cy="320" rx="55" ry="200" fill="#020603" opacity="0.95"/>
+    <!-- Individual gnarled trees -->
+    ${this.buildForestTrees()}
+    <!-- Eerie glow from within forest -->
+    <ellipse cx="828" cy="360" rx="40" ry="80" fill="#0a2a0a" opacity="0.3"/>
+    <ellipse cx="818" cy="400" rx="25" ry="50" fill="#143014" opacity="0.2"/>
+    <!-- Forest boundary -->
+    <path d="M 770 200 Q 790 280 775 360 Q 760 440 780 520 Q 790 580 770 640"
+          fill="none" stroke="#0d1a0d" stroke-width="3" opacity="0.6"/>
+  </g>
+
+  <!-- ═══ COBBLESTONE PATHS ═══ -->
+  <g stroke="#2a2030" stroke-width="8" fill="none" opacity="0.6" stroke-linecap="round" stroke-dasharray="14,6">
+    <!-- Castle to tent -->
+    <path d="M 453 215 L 445 260"/>
+    <!-- Tent to cauldron -->
+    <path d="M 445 295 L 450 350"/>
+    <!-- Cauldron to feast table -->
+    <path d="M 498 390 Q 550 390 595 385"/>
+    <!-- Cauldron to trunk -->
+    <path d="M 402 390 Q 350 388 295 380"/>
+    <!-- Left to hygiene -->
+    <path d="M 220 440 Q 200 460 195 490"/>
+    <!-- Right to infirmary -->
+    <path d="M 680 440 Q 670 460 660 490"/>
+    <!-- Cauldron to forest path -->
+    <path d="M 500 400 Q 620 420 720 390"/>
+  </g>
+  <!-- Stone texture on paths -->
+  <g stroke="#1e1828" stroke-width="3" fill="none" opacity="0.35" stroke-linecap="round" stroke-dasharray="6,10">
+    <path d="M 453 215 L 445 260"/>
+    <path d="M 445 295 L 450 350"/>
+    <path d="M 498 390 Q 550 390 595 385"/>
+    <path d="M 402 390 Q 350 388 295 380"/>
+  </g>
+
+  <!-- ═══ ZONE: TIENDA MÁGICA (carpa) ═══ -->
+  <g id="zone-carpa" class="zone-area" tabindex="0" role="button"
+     aria-label="Tienda Mágica — click para ver items" data-zone="carpa" data-filter="glowGold">
     <g class="zone-fill-group">
-      <!-- Tent base -->
-      <ellipse cx="440" cy="200" rx="85" ry="60" fill="#5c6b35" opacity="0.85" class="zone-fill"/>
-      <!-- Tent triangle shape -->
-      <polygon points="440,120 365,220 515,220" fill="#7a8c45" opacity="0.9" class="zone-fill"/>
-      <polygon points="440,135 390,215 490,215" fill="#9aac55" opacity="0.7" class="zone-fill"/>
-      <!-- Tent door -->
-      <ellipse cx="440" cy="215" rx="18" ry="22" fill="#3a4520" opacity="0.8"/>
+      <!-- Tent shadow/base -->
+      <ellipse cx="445" cy="285" rx="72" ry="18" fill="#030208" opacity="0.6"/>
+      <!-- Tent body (right panel) -->
+      <polygon points="445,120 375,278 515,278" fill="#6b1a1a" opacity="0.88" class="zone-fill"/>
+      <!-- Tent left panel (lighter) -->
+      <polygon points="445,120 375,278 410,278 445,145" fill="#8b2222" opacity="0.82" class="zone-fill"/>
+      <!-- Tent right panel -->
+      <polygon points="445,120 515,278 480,278 445,145" fill="#7a1c1c" opacity="0.82" class="zone-fill"/>
+      <!-- Gold stripe detail -->
+      <polygon points="445,120 440,135 450,135" fill="#c9a84c" opacity="0.6"/>
+      <line x1="445" y1="120" x2="375" y2="278" stroke="#c9a84c" stroke-width="1" opacity="0.25"/>
+      <line x1="445" y1="120" x2="515" y2="278" stroke="#c9a84c" stroke-width="1" opacity="0.25"/>
+      <line x1="445" y1="120" x2="415" y2="278" stroke="#c9a84c" stroke-width="0.8" opacity="0.18"/>
+      <line x1="445" y1="120" x2="475" y2="278" stroke="#c9a84c" stroke-width="0.8" opacity="0.18"/>
+      <!-- Star motifs on tent -->
+      <text x="420" y="185" font-size="12" fill="#c9a84c" opacity="0.35" text-anchor="middle">✦</text>
+      <text x="468" y="200" font-size="10" fill="#c9a84c" opacity="0.30" text-anchor="middle">✦</text>
+      <text x="440" y="230" font-size="9" fill="#c9a84c" opacity="0.25" text-anchor="middle">✧</text>
+      <!-- Tent entrance -->
+      <ellipse cx="445" cy="276" rx="22" ry="14" fill="#1a0808" opacity="0.9"/>
+      <!-- Interior warm glow -->
+      <ellipse cx="445" cy="260" rx="40" ry="18" fill="#ff8800" opacity="0.06"/>
+      <!-- Tent pole peak pennant -->
+      <polygon points="445,120 445,107 460,113" fill="#c9a84c" opacity="0.65"/>
       <!-- Guy ropes -->
-      <line x1="440" y1="120" x2="390" y2="90" stroke="#8b7355" stroke-width="1.5" opacity="0.6"/>
-      <line x1="440" y1="120" x2="490" y2="90" stroke="#8b7355" stroke-width="1.5" opacity="0.6"/>
-      <circle cx="390" cy="90" r="3" fill="#8b7355" opacity="0.6"/>
-      <circle cx="490" cy="90" r="3" fill="#8b7355" opacity="0.6"/>
+      <line x1="445" y1="120" x2="398" y2="95" stroke="#5a4020" stroke-width="1.5" opacity="0.5"/>
+      <line x1="445" y1="120" x2="492" y2="95" stroke="#5a4020" stroke-width="1.5" opacity="0.5"/>
+      <circle cx="398" cy="95" r="3" fill="#5a4020" opacity="0.5"/>
+      <circle cx="492" cy="95" r="3" fill="#5a4020" opacity="0.5"/>
     </g>
-    <!-- Hover label -->
-    <text x="440" y="265" text-anchor="middle" class="zone-label" fill="#3a4520" font-size="14" font-weight="700">⛺ Carpa</text>
-    <!-- Badge -->
-    <g id="badge-carpa" transform="translate(510, 135)">
-      <circle r="16" class="zone-badge-circle" fill="#6b7c45"/>
+    <text x="445" y="318" text-anchor="middle" class="zone-label"
+          fill="#c9a84c" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🏕️ Tienda Mágica</text>
+    <g id="badge-carpa" transform="translate(512, 132)">
+      <circle r="16" class="zone-badge-circle" fill="#9b2626"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/6</text>
     </g>
   </g>
 
-  <!-- FOGON (center) -->
-  <g id="zone-fogon" class="zone-area" tabindex="0" role="button" aria-label="Zona Fogón - click para ver items"
-     data-zone="fogon" data-filter="dropShadowOrange">
+  <!-- ═══ ZONE: EL CALDERO (fogon) ═══ -->
+  <g id="zone-fogon" class="zone-area" tabindex="0" role="button"
+     aria-label="El Caldero — click para ver items" data-zone="fogon" data-filter="glowPurple">
     <g class="zone-fill-group">
-      <!-- Stone circle -->
-      <circle cx="450" cy="395" r="48" fill="#6b5a3a" opacity="0.85" class="zone-fill"/>
-      <circle cx="450" cy="395" r="38" fill="#4a3a25" opacity="0.9" class="zone-fill"/>
-      <!-- Stones around -->
-      ${this.buildStones(450, 395, 44, 10)}
-      <!-- Embers -->
-      <circle cx="450" cy="398" r="14" fill="#cc4400" opacity="0.8"/>
-      <circle cx="450" cy="398" r="9" fill="#ff6600" opacity="0.9"/>
-      <!-- Logs -->
-      <rect x="428" y="400" width="44" height="7" rx="3" fill="#5a3a1a" opacity="0.8" transform="rotate(-25, 450, 398)"/>
-      <rect x="428" y="400" width="44" height="7" rx="3" fill="#6b4a2a" opacity="0.8" transform="rotate(25, 450, 398)"/>
-      <!-- Flames -->
+      <!-- Cauldron shadow -->
+      <ellipse cx="450" cy="432" rx="52" ry="12" fill="#030208" opacity="0.55"/>
+      <!-- Stone ring -->
+      ${this.buildStones(450, 415, 46, 10)}
+      <!-- Cauldron body (wide at bottom, narrower at top) -->
+      <path d="M 408 410 Q 400 368 450 360 Q 500 368 492 410 Q 482 434 450 434 Q 418 434 408 410 Z"
+            fill="#12101e" opacity="0.95" class="zone-fill"/>
+      <!-- Cauldron rim -->
+      <ellipse cx="450" cy="408" rx="42" ry="12" fill="#1e1c32" opacity="0.95" class="zone-fill"/>
+      <!-- Cauldron legs -->
+      <rect x="428" y="430" width="9" height="12" rx="3" fill="#0c0a1a" opacity="0.9"/>
+      <rect x="446" y="432" width="9" height="10" rx="3" fill="#0c0a1a" opacity="0.9"/>
+      <rect x="464" y="430" width="9" height="12" rx="3" fill="#0c0a1a" opacity="0.9"/>
+      <!-- Bubbling liquid inside -->
+      <ellipse cx="450" cy="405" rx="34" ry="9" fill="#0a1e14" opacity="0.9"/>
+      <circle cx="434" cy="403" r="5" fill="#14401e" opacity="0.7"/>
+      <circle cx="452" cy="400" r="6" fill="#0e3018" opacity="0.8"/>
+      <circle cx="464" cy="404" r="4" fill="#18501e" opacity="0.6"/>
+      <!-- Magical steam -->
+      <ellipse cx="445" cy="365" rx="8" ry="3" fill="#4ecdc4" opacity="0.12"/>
+      <ellipse cx="456" cy="360" rx="6" ry="2.5" fill="#7b2fbf" opacity="0.10"/>
+      <!-- Magical flames: purple & teal -->
       <g id="fire-group">
-        <ellipse cx="443" cy="380" rx="7" ry="18" fill="#ff4500" class="flame flame-1" opacity="var(--flame-opacity)" transform-origin="443px 395px"/>
-        <ellipse cx="450" cy="374" rx="8" ry="22" fill="#ff6600" class="flame flame-2" opacity="var(--flame-opacity)" transform-origin="450px 395px"/>
-        <ellipse cx="457" cy="381" rx="6" ry="16" fill="#ffaa00" class="flame flame-3" opacity="var(--flame-opacity)" transform-origin="457px 395px"/>
-        <!-- Inner bright flames -->
-        <ellipse cx="447" cy="383" rx="4" ry="12" fill="#ffcc00" class="flame flame-2" opacity="calc(var(--flame-opacity) * 0.8)" transform-origin="447px 395px"/>
-        <ellipse cx="453" cy="385" rx="3" ry="10" fill="#ffe066" class="flame flame-1" opacity="calc(var(--flame-opacity) * 0.7)" transform-origin="453px 395px"/>
+        <ellipse cx="438" cy="380" rx="7" ry="22" fill="#7b00ff" class="flame flame-1"
+                 opacity="var(--flame-opacity)" transform-origin="438px 400px"/>
+        <ellipse cx="450" cy="373" rx="8" ry="28" fill="#4ecdc4" class="flame flame-2"
+                 opacity="var(--flame-opacity)" transform-origin="450px 400px"/>
+        <ellipse cx="462" cy="381" rx="6" ry="20" fill="#00cc66" class="flame flame-3"
+                 opacity="var(--flame-opacity)" transform-origin="462px 400px"/>
+        <!-- Inner bright core -->
+        <ellipse cx="445" cy="383" rx="4" ry="14" fill="#c0ffee" class="flame flame-2"
+                 opacity="calc(var(--flame-opacity) * 0.65)" transform-origin="445px 400px"/>
+        <ellipse cx="454" cy="386" rx="3" ry="11" fill="#ffffff" class="flame flame-1"
+                 opacity="calc(var(--flame-opacity) * 0.45)" transform-origin="454px 400px"/>
       </g>
-      <!-- Glow (night) -->
-      <circle cx="450" cy="395" r="55" fill="#ff4500" opacity="0" class="fogon-glow" style="mix-blend-mode: screen;"/>
+      <!-- Purple magic glow -->
+      <circle cx="450" cy="400" r="58" fill="#5500cc" opacity="0" class="fogon-glow" style="mix-blend-mode: screen;"/>
     </g>
-    <text x="450" y="455" text-anchor="middle" class="zone-label" fill="#6b5a3a" font-size="14" font-weight="700">🔥 Fogón</text>
-    <g id="badge-fogon" transform="translate(492, 355)">
-      <circle r="16" class="zone-badge-circle" fill="#e07b39"/>
+    <text x="450" y="460" text-anchor="middle" class="zone-label"
+          fill="#a070e0" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🧪 El Caldero</text>
+    <g id="badge-fogon" transform="translate(494, 360)">
+      <circle r="16" class="zone-badge-circle" fill="#2a1a5c"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/6</text>
     </g>
   </g>
 
-  <!-- COCINA (right center) -->
-  <g id="zone-cocina" class="zone-area" tabindex="0" role="button" aria-label="Zona Cocina - click para ver items"
-     data-zone="cocina" data-filter="dropShadowKhaki">
+  <!-- ═══ ZONE: MESA DEL FESTÍN (cocina) ═══ -->
+  <g id="zone-cocina" class="zone-area" tabindex="0" role="button"
+     aria-label="Mesa del Festín — click para ver items" data-zone="cocina" data-filter="glowAmber">
     <g class="zone-fill-group">
-      <!-- Table top view -->
-      <rect x="600" y="340" width="130" height="90" rx="8" fill="#c8a84b" opacity="0.85" class="zone-fill"/>
-      <rect x="606" y="346" width="118" height="78" rx="6" fill="#d4b85a" opacity="0.7" class="zone-fill"/>
-      <!-- Table legs visible from top -->
-      <circle cx="610" cy="352" r="5" fill="#8b7340" opacity="0.7"/>
-      <circle cx="720" cy="352" r="5" fill="#8b7340" opacity="0.7"/>
-      <circle cx="610" cy="424" r="5" fill="#8b7340" opacity="0.7"/>
-      <circle cx="720" cy="424" r="5" fill="#8b7340" opacity="0.7"/>
-      <!-- Items on table -->
-      <rect x="620" y="358" width="28" height="20" rx="4" fill="#9a7a30" opacity="0.6"/>
-      <circle cx="680" cy="368" r="12" fill="#9a7a30" opacity="0.5"/>
-      <rect x="700" y="358" width="14" height="24" rx="3" fill="#7a5a20" opacity="0.6"/>
+      <!-- Table shadow -->
+      <ellipse cx="665" cy="445" rx="78" ry="12" fill="#030208" opacity="0.5"/>
+      <!-- Long feast table (dark oak) -->
+      <rect x="592" y="355" width="146" height="82" rx="6" fill="#2a1e08" opacity="0.92" class="zone-fill"/>
+      <rect x="598" y="361" width="134" height="70" rx="4" fill="#3a2810" opacity="0.80" class="zone-fill"/>
+      <!-- Table wood grain suggestion -->
+      <line x1="598" y1="375" x2="732" y2="375" stroke="#4a3418" stroke-width="0.8" opacity="0.4"/>
+      <line x1="598" y1="390" x2="732" y2="390" stroke="#4a3418" stroke-width="0.8" opacity="0.35"/>
+      <line x1="598" y1="405" x2="732" y2="405" stroke="#4a3418" stroke-width="0.8" opacity="0.4"/>
+      <line x1="598" y1="420" x2="732" y2="420" stroke="#4a3418" stroke-width="0.8" opacity="0.35"/>
+      <!-- Table legs -->
+      <rect x="602" y="428" width="10" height="18" rx="3" fill="#221605" opacity="0.9"/>
+      <rect x="718" y="428" width="10" height="18" rx="3" fill="#221605" opacity="0.9"/>
+      <!-- Goblets & platters on table -->
+      <ellipse cx="625" cy="388" rx="9" ry="7" fill="#c9a84c" opacity="0.55"/>
+      <rect x="621" y="381" width="8" height="10" rx="2" fill="#c9a84c" opacity="0.40"/>
+      <ellipse cx="665" cy="388" rx="14" ry="9" fill="#5a3a10" opacity="0.65"/>
+      <ellipse cx="665" cy="385" rx="11" ry="7" fill="#7a5018" opacity="0.55"/>
+      <ellipse cx="705" cy="388" rx="9" ry="7" fill="#c9a84c" opacity="0.55"/>
+      <rect x="701" y="381" width="8" height="10" rx="2" fill="#c9a84c" opacity="0.40"/>
+      <ellipse cx="645" cy="415" rx="10" ry="7" fill="#6a4010" opacity="0.6"/>
+      <ellipse cx="685" cy="415" rx="10" ry="7" fill="#6a4010" opacity="0.6"/>
+      <!-- Floating candles above table (simplified) -->
+      <rect x="620" y="343" width="5" height="12" rx="1" fill="#f0d060" opacity="0.50"/>
+      <ellipse cx="622" cy="342" rx="4" ry="2" fill="#ffee88" opacity="0.55"/>
+      <rect x="660" y="340" width="5" height="14" rx="1" fill="#f0d060" opacity="0.55"/>
+      <ellipse cx="662" cy="339" rx="4" ry="2" fill="#ffee88" opacity="0.60"/>
+      <rect x="700" y="343" width="5" height="12" rx="1" fill="#f0d060" opacity="0.50"/>
+      <ellipse cx="702" cy="342" rx="4" ry="2" fill="#ffee88" opacity="0.55"/>
       <!-- Bench left -->
-      <rect x="575" y="355" width="20" height="60" rx="5" fill="#a08030" opacity="0.7"/>
+      <rect x="570" y="368" width="18" height="56" rx="4" fill="#3a2808" opacity="0.80"/>
       <!-- Bench right -->
-      <rect x="735" y="355" width="20" height="60" rx="5" fill="#a08030" opacity="0.7"/>
+      <rect x="742" y="368" width="18" height="56" rx="4" fill="#3a2808" opacity="0.80"/>
     </g>
-    <text x="665" y="465" text-anchor="middle" class="zone-label" fill="#7a6020" font-size="14" font-weight="700">🍳 Cocina</text>
-    <g id="badge-cocina" transform="translate(738, 338)">
-      <circle r="16" class="zone-badge-circle" fill="#c8a84b"/>
+    <text x="665" y="474" text-anchor="middle" class="zone-label"
+          fill="#c9a84c" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🍖 Mesa del Festín</text>
+    <g id="badge-cocina" transform="translate(744, 353)">
+      <circle r="16" class="zone-badge-circle" fill="#7a5a10"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/9</text>
     </g>
   </g>
 
-  <!-- ALMACENAMIENTO (left center) -->
-  <g id="zone-almacenamiento" class="zone-area" tabindex="0" role="button" aria-label="Zona Almacenamiento - click para ver items"
-     data-zone="almacenamiento" data-filter="dropShadowBrown">
+  <!-- ═══ ZONE: BAÚL ENCANTADO (almacenamiento) ═══ -->
+  <g id="zone-almacenamiento" class="zone-area" tabindex="0" role="button"
+     aria-label="Baúl Encantado — click para ver items" data-zone="almacenamiento" data-filter="glowGold">
     <g class="zone-fill-group">
-      <!-- Storage area -->
-      <rect x="155" y="340" width="110" height="90" rx="8" fill="#8b6347" opacity="0.85" class="zone-fill"/>
-      <!-- Boxes/items -->
-      <rect x="168" y="352" width="30" height="25" rx="3" fill="#c8956a" opacity="0.8"/>
-      <rect x="202" y="352" width="30" height="25" rx="3" fill="#a87050" opacity="0.8"/>
-      <rect x="236" y="352" width="22" height="25" rx="3" fill="#b07860" opacity="0.8"/>
-      <!-- Backpack icon top view -->
-      <ellipse cx="185" cy="400" rx="18" ry="20" fill="#7a5035" opacity="0.9"/>
-      <ellipse cx="185" cy="395" rx="13" ry="14" fill="#9a6040" opacity="0.8"/>
-      <rect x="177" y="413" width="16" height="6" rx="3" fill="#7a5035" opacity="0.8"/>
+      <!-- Trunk shadow -->
+      <ellipse cx="213" cy="443" rx="65" ry="12" fill="#030208" opacity="0.5"/>
+      <!-- Trunk base body -->
+      <rect x="155" y="358" width="116" height="78" rx="6" fill="#2a1a08" opacity="0.92" class="zone-fill"/>
+      <rect x="161" y="364" width="104" height="66" rx="4" fill="#3a240c" opacity="0.80" class="zone-fill"/>
+      <!-- Metal hasps/straps -->
+      <rect x="155" y="380" width="116" height="6" rx="2" fill="#c9a84c" opacity="0.35"/>
+      <rect x="155" y="410" width="116" height="6" rx="2" fill="#c9a84c" opacity="0.35"/>
+      <rect x="207" y="358" width="12" height="78" rx="2" fill="#c9a84c" opacity="0.25"/>
+      <!-- Lock -->
+      <rect x="204" y="390" width="18" height="16" rx="4" fill="#c9a84c" opacity="0.55"/>
+      <rect x="207" y="388" width="12" height="6" rx="6" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.55"/>
+      <!-- Corner reinforcements -->
+      <rect x="155" y="358" width="12" height="12" rx="0" fill="#c9a84c" opacity="0.30"/>
+      <rect x="259" y="358" width="12" height="12" rx="0" fill="#c9a84c" opacity="0.30"/>
+      <rect x="155" y="424" width="12" height="12" rx="0" fill="#c9a84c" opacity="0.30"/>
+      <rect x="259" y="424" width="12" height="12" rx="0" fill="#c9a84c" opacity="0.30"/>
+      <!-- Magical glow around edges -->
+      <rect x="153" y="356" width="120" height="82" rx="7" fill="none"
+            stroke="#c9a84c" stroke-width="1" opacity="0.20"/>
+      <!-- Items beside trunk -->
+      <circle cx="152" cy="408" r="14" fill="none" stroke="#c9a84c" stroke-width="2" opacity="0.45"/>
+      <circle cx="152" cy="408" r="9" fill="none" stroke="#c9a84c" stroke-width="1.5" opacity="0.35"/>
+      <circle cx="152" cy="408" r="4" fill="#c9a84c" opacity="0.35"/>
       <!-- Rope coil -->
-      <circle cx="230" cy="400" r="14" fill="none" stroke="#c8a870" stroke-width="3" opacity="0.8"/>
-      <circle cx="230" cy="400" r="9" fill="none" stroke="#c8a870" stroke-width="2" opacity="0.7"/>
-      <circle cx="230" cy="400" r="4" fill="#c8a870" opacity="0.7"/>
+      <circle cx="278" cy="400" r="16" fill="none" stroke="#8a6820" stroke-width="3" opacity="0.6"/>
+      <circle cx="278" cy="400" r="10" fill="none" stroke="#8a6820" stroke-width="2" opacity="0.5"/>
+      <circle cx="278" cy="400" r="4" fill="#8a6820" opacity="0.5"/>
     </g>
-    <text x="210" y="453" text-anchor="middle" class="zone-label" fill="#5a3a20" font-size="14" font-weight="700">🎒 Almacenamiento</text>
-    <g id="badge-almacenamiento" transform="translate(272, 338)">
-      <circle r="16" class="zone-badge-circle" fill="#8b6347"/>
+    <text x="213" y="468" text-anchor="middle" class="zone-label"
+          fill="#c9a84c" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🧳 Baúl Encantado</text>
+    <g id="badge-almacenamiento" transform="translate(278, 356)">
+      <circle r="16" class="zone-badge-circle" fill="#5c3a1e"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/5</text>
     </g>
   </g>
 
-  <!-- HIGIENE (bottom left) -->
-  <g id="zone-higiene" class="zone-area" tabindex="0" role="button" aria-label="Zona Higiene - click para ver items"
-     data-zone="higiene" data-filter="dropShadowBlue">
+  <!-- ═══ ZONE: BAÑOS ENCANTADOS (higiene) ═══ -->
+  <g id="zone-higiene" class="zone-area" tabindex="0" role="button"
+     aria-label="Baños Encantados — click para ver items" data-zone="higiene" data-filter="glowBlue">
     <g class="zone-fill-group">
-      <!-- Bathroom/hygiene area -->
-      <rect x="130" y="490" width="115" height="85" rx="10" fill="#4a7fa5" opacity="0.8" class="zone-fill"/>
-      <!-- Privacy screen lines -->
-      <rect x="130" y="490" width="8" height="85" rx="4" fill="#357090" opacity="0.7"/>
-      <rect x="237" y="490" width="8" height="85" rx="4" fill="#357090" opacity="0.7"/>
-      <!-- Hygiene icons simplified -->
-      <circle cx="175" cy="530" r="18" fill="#357090" opacity="0.6"/>
-      <rect x="165" y="516" width="20" height="28" rx="4" fill="#5a90b5" opacity="0.7"/>
-      <circle cx="220" cy="525" r="12" fill="#5a90b5" opacity="0.6"/>
-      <rect x="213" y="536" width="14" height="20" rx="3" fill="#4a80a0" opacity="0.6"/>
-      <!-- Water drops -->
-      <ellipse cx="155" cy="555" rx="5" ry="7" fill="#87ceeb" opacity="0.7"/>
-      <ellipse cx="167" cy="560" rx="4" ry="6" fill="#87ceeb" opacity="0.6"/>
+      <!-- Stone walls -->
+      <rect x="128" y="492" width="122" height="88" rx="8" fill="#0e1830" opacity="0.90" class="zone-fill"/>
+      <rect x="134" y="498" width="110" height="76" rx="6" fill="#14203a" opacity="0.75" class="zone-fill"/>
+      <!-- Stone wall texture suggestion -->
+      <rect x="128" y="492" width="10" height="88" rx="4" fill="#0a1225" opacity="0.70"/>
+      <rect x="240" y="492" width="10" height="88" rx="4" fill="#0a1225" opacity="0.70"/>
+      <line x1="128" y1="522" x2="250" y2="522" stroke="#0a1225" stroke-width="1.5" opacity="0.45"/>
+      <line x1="128" y1="552" x2="250" y2="552" stroke="#0a1225" stroke-width="1.5" opacity="0.45"/>
+      <!-- Basin -->
+      <ellipse cx="172" cy="532" rx="22" ry="16" fill="#0e2840" opacity="0.85"/>
+      <ellipse cx="172" cy="530" rx="16" ry="11" fill="#142e4a" opacity="0.80"/>
+      <!-- Water shimmer -->
+      <ellipse cx="170" cy="528" rx="10" ry="5" fill="#3a70a0" opacity="0.30"/>
+      <!-- Bottles/supplies -->
+      <rect x="212" y="502" width="10" height="22" rx="4" fill="#3a6090" opacity="0.65"/>
+      <ellipse cx="217" cy="500" rx="5" ry="3" fill="#4a70a0" opacity="0.55"/>
+      <rect x="226" y="506" width="8" height="18" rx="3" fill="#2a5080" opacity="0.65"/>
+      <!-- Blue water drops -->
+      <ellipse cx="152" cy="558" rx="5" ry="7" fill="#4a80b0" opacity="0.50"/>
+      <ellipse cx="164" cy="563" rx="4" ry="6" fill="#3a70a0" opacity="0.45"/>
+      <!-- Curtain/privacy screen -->
+      <path d="M 128 492 Q 140 520 130 550 Q 138 575 128 580"
+            fill="none" stroke="#1a2a50" stroke-width="4" opacity="0.50"/>
     </g>
-    <text x="187" y="595" text-anchor="middle" class="zone-label" fill="#1a4a6a" font-size="14" font-weight="700">🚿 Higiene</text>
-    <g id="badge-higiene" transform="translate(252, 488)">
-      <circle r="16" class="zone-badge-circle" fill="#4a7fa5"/>
+    <text x="189" y="600" text-anchor="middle" class="zone-label"
+          fill="#4a80b0" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🛁 Baños Encantados</text>
+    <g id="badge-higiene" transform="translate(257, 490)">
+      <circle r="16" class="zone-badge-circle" fill="#1a3560"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/7</text>
     </g>
   </g>
 
-  <!-- SENDEROS (right, trails) -->
-  <g id="zone-senderos" class="zone-area" tabindex="0" role="button" aria-label="Zona Senderos - click para ver items"
-     data-zone="senderos" data-filter="dropShadowGreen">
+  <!-- ═══ ZONE: BOSQUE PROHIBIDO (senderos) ═══ -->
+  <g id="zone-senderos" class="zone-area" tabindex="0" role="button"
+     aria-label="Bosque Prohibido — click para ver items" data-zone="senderos" data-filter="glowGreen">
     <g class="zone-fill-group">
-      <!-- Trail path -->
-      <path d="M 730 280 Q 770 320 750 370 Q 730 420 760 460 L 820 460 Q 850 420 830 370 Q 810 320 840 280 Z"
-            fill="#4a8c5c" opacity="0.8" class="zone-fill"/>
-      <!-- Path markers -->
-      <circle cx="750" cy="300" r="6" fill="#ff4444" opacity="0.8"/>
-      <circle cx="745" cy="340" r="6" fill="#ff4444" opacity="0.8"/>
-      <circle cx="755" cy="380" r="6" fill="#ff4444" opacity="0.8"/>
-      <circle cx="760" cy="420" r="6" fill="#ff4444" opacity="0.8"/>
-      <!-- Trail line -->
-      <path d="M 750 295 Q 742 325 748 355 Q 753 385 758 415" stroke="#ffaaaa" stroke-width="2" fill="none" opacity="0.7" stroke-dasharray="6,4"/>
-      <!-- Compass icon -->
-      <circle cx="810" cy="330" r="20" fill="#2d6a3a" opacity="0.8"/>
-      <circle cx="810" cy="330" r="16" fill="#3a8a4a" opacity="0.7"/>
-      <polygon points="810,316 813,330 810,344 807,330" fill="white" opacity="0.9"/>
-      <polygon points="810,316 813,330 810,344 807,330" fill="#cc3333" opacity="0.9"
-               transform="rotate(180, 810, 330)"/>
-      <!-- Trees along trail -->
-      <circle cx="780" cy="310" r="10" fill="#2d5a2d" opacity="0.8"/>
-      <circle cx="790" cy="360" r="9" fill="#3a6a3a" opacity="0.8"/>
-      <circle cx="785" cy="410" r="10" fill="#2d5a2d" opacity="0.8"/>
+      <!-- Forest zone fill -->
+      <path d="M 720 285 Q 762 310 748 375 Q 735 440 762 480 L 825 475 Q 840 438 828 372 Q 815 308 845 285 Z"
+            fill="#070f04" opacity="0.88" class="zone-fill"/>
+      <!-- Eerie glow within -->
+      <ellipse cx="775" cy="385" rx="30" ry="70" fill="#0a2a0a" opacity="0.50"/>
+      <!-- Gnarled trees in zone -->
+      ${this.buildZoneTree(748, 310, 0.8)}
+      ${this.buildZoneTree(780, 340, 0.9)}
+      ${this.buildZoneTree(760, 390, 0.85)}
+      ${this.buildZoneTree(795, 420, 0.75)}
+      ${this.buildZoneTree(752, 445, 0.8)}
+      <!-- Path into forest (glowing markers) -->
+      <path d="M 720 390 Q 742 390 762 395 Q 778 400 795 398"
+            stroke="#2a6a2a" stroke-width="2" fill="none" opacity="0.5" stroke-dasharray="8,5"/>
+      <!-- Glowing mushrooms as trail markers -->
+      <ellipse cx="728" cy="396" rx="6" ry="3" fill="#2a8a2a" opacity="0.65"/>
+      <rect x="727" y="393" width="3" height="6" rx="1" fill="#1a5a1a" opacity="0.7"/>
+      <ellipse cx="744" cy="398" rx="5" ry="3" fill="#2a8a2a" opacity="0.60"/>
+      <rect x="743" y="395" width="3" height="5" rx="1" fill="#1a5a1a" opacity="0.65"/>
+      <ellipse cx="760" cy="400" rx="5" ry="3" fill="#3a9a3a" opacity="0.65"/>
+      <rect x="759" y="397" width="3" height="5" rx="1" fill="#1a5a1a" opacity="0.65"/>
+      <!-- Eyes in the dark (subtle) -->
+      <ellipse cx="808" cy="355" rx="3" ry="2" fill="#aaff44" opacity="0.35"/>
+      <ellipse cx="816" cy="355" rx="3" ry="2" fill="#aaff44" opacity="0.35"/>
+      <ellipse cx="800" cy="410" rx="2.5" ry="1.8" fill="#aaff44" opacity="0.25"/>
+      <ellipse cx="806" cy="410" rx="2.5" ry="1.8" fill="#aaff44" opacity="0.25"/>
     </g>
-    <text x="785" y="478" text-anchor="middle" class="zone-label" fill="#1a4a2a" font-size="14" font-weight="700">🧭 Senderos</text>
-    <g id="badge-senderos" transform="translate(845, 280)">
-      <circle r="16" class="zone-badge-circle" fill="#4a8c5c"/>
+    <text x="778" y="496" text-anchor="middle" class="zone-label"
+          fill="#2a8030" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">🌲 Bosque Prohibido</text>
+    <g id="badge-senderos" transform="translate(848, 283)">
+      <circle r="16" class="zone-badge-circle" fill="#0d2a0d"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/6</text>
     </g>
   </g>
 
-  <!-- BOTIQUIN (bottom right) -->
-  <g id="zone-botiquin" class="zone-area" tabindex="0" role="button" aria-label="Zona Botiquín - click para ver items"
-     data-zone="botiquin" data-filter="dropShadowRed">
+  <!-- ═══ ZONE: ENFERMERÍA DE CAMPO (botiquin) ═══ -->
+  <g id="zone-botiquin" class="zone-area" tabindex="0" role="button"
+     aria-label="Enfermería de Campo — click para ver items" data-zone="botiquin" data-filter="glowTeal">
     <g class="zone-fill-group">
-      <!-- First aid box -->
-      <rect x="600" y="490" width="95" height="80" rx="8" fill="#c0392b" opacity="0.85" class="zone-fill"/>
-      <rect x="606" y="496" width="83" height="68" rx="6" fill="#d44333" opacity="0.7" class="zone-fill"/>
-      <!-- Cross symbol -->
-      <rect x="638" y="510" width="22" height="40" rx="4" fill="white" opacity="0.9"/>
-      <rect x="626" y="522" width="46" height="16" rx="4" fill="white" opacity="0.9"/>
-      <!-- Corner details -->
-      <circle cx="614" cy="504" r="4" fill="#a02020" opacity="0.7"/>
-      <circle cx="681" cy="504" r="4" fill="#a02020" opacity="0.7"/>
-      <circle cx="614" cy="556" r="4" fill="#a02020" opacity="0.7"/>
-      <circle cx="681" cy="556" r="4" fill="#a02020" opacity="0.7"/>
+      <!-- Medical tent background -->
+      <rect x="594" y="492" width="108" height="82" rx="8" fill="#0c2018" opacity="0.90" class="zone-fill"/>
+      <rect x="600" y="498" width="96" height="70" rx="6" fill="#122818" opacity="0.78" class="zone-fill"/>
+      <!-- Cross symbol — magical healing version -->
+      <rect x="638" y="510" width="22" height="46" rx="4" fill="#2a8060" opacity="0.85"/>
+      <rect x="626" y="522" width="46" height="22" rx="4" fill="#2a8060" opacity="0.85"/>
+      <!-- Cross inner glow -->
+      <rect x="640" y="512" width="18" height="42" rx="3" fill="#3aa070" opacity="0.55"/>
+      <rect x="628" y="524" width="42" height="18" rx="3" fill="#3aa070" opacity="0.55"/>
+      <!-- Potion bottle (left) -->
+      <rect x="602" y="502" width="12" height="24" rx="4" fill="#1a5040" opacity="0.75"/>
+      <ellipse cx="608" cy="500" rx="6" ry="3" fill="#2a6050" opacity="0.70"/>
+      <ellipse cx="608" cy="515" rx="5" ry="7" fill="#24604a" opacity="0.55"/>
+      <!-- Potion bottle (right) -->
+      <rect x="688" y="506" width="10" height="20" rx="3" fill="#1a4a38" opacity="0.75"/>
+      <ellipse cx="693" cy="504" rx="5" ry="2.5" fill="#2a5a48" opacity="0.70"/>
+      <!-- Teal glow around cross -->
+      <rect x="624" y="508" width="50" height="50" rx="6" fill="none"
+            stroke="#2a8060" stroke-width="1" opacity="0.30"/>
     </g>
-    <text x="647" y="592" text-anchor="middle" class="zone-label" fill="#7a1010" font-size="14" font-weight="700">🩺 Botiquín</text>
-    <g id="badge-botiquin" transform="translate(702, 488)">
-      <circle r="16" class="zone-badge-circle" fill="#c0392b"/>
+    <text x="648" y="594" text-anchor="middle" class="zone-label"
+          fill="#2a8060" font-size="13" font-weight="700" font-family="'Cinzel', serif" letter-spacing="0.04em">⚕️ Enfermería</text>
+    <g id="badge-botiquin" transform="translate(708, 490)">
+      <circle r="16" class="zone-badge-circle" fill="#1e5a4a"/>
       <text text-anchor="middle" dy="4" class="zone-badge-text">0/5</text>
     </g>
   </g>
 
-  <!-- Lake decoration -->
-  <ellipse cx="550" cy="250" rx="60" ry="35" fill="#5ba3cc" opacity="0.5"/>
-  <ellipse cx="548" cy="248" rx="48" ry="26" fill="#7ab8d8" opacity="0.4"/>
-  <!-- Lake shimmer -->
-  <line x1="520" y1="245" x2="540" y2="242" stroke="white" stroke-width="1.5" opacity="0.5"/>
-  <line x1="545" y1="252" x2="568" y2="248" stroke="white" stroke-width="1.5" opacity="0.4"/>
+  <!-- ═══ DECORATIVE DETAILS ═══ -->
+  <!-- Floating magical orbs near cauldron -->
+  <circle cx="408" cy="355" r="4" fill="#7b00ff" opacity="0.35">
+    <animate attributeName="opacity" values="0.35;0.65;0.35" dur="2.8s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="355;349;355" dur="2.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="496" cy="348" r="3.5" fill="#4ecdc4" opacity="0.30">
+    <animate attributeName="opacity" values="0.30;0.60;0.30" dur="3.2s" begin="0.8s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="348;342;348" dur="3.2s" begin="0.8s" repeatCount="indefinite"/>
+  </circle>
+  <circle cx="388" cy="370" r="3" fill="#00cc66" opacity="0.28">
+    <animate attributeName="opacity" values="0.28;0.55;0.28" dur="2.5s" begin="1.5s" repeatCount="indefinite"/>
+    <animate attributeName="cy" values="370;364;370" dur="2.5s" begin="1.5s" repeatCount="indefinite"/>
+  </circle>
 
-  <!-- Mountain silhouette in background -->
-  <polygon points="50,300 130,180 210,300" fill="#4a6a4a" opacity="0.4"/>
-  <polygon points="100,300 200,150 300,300" fill="#3a5a3a" opacity="0.35"/>
-  <polygon points="10,300 80,200 160,300" fill="#5a7a5a" opacity="0.3"/>
-
-  <!-- Small decorative details -->
-  <!-- Rock cluster near fogon -->
-  <ellipse cx="510" cy="410" rx="8" ry="5" fill="#7a7a6a" opacity="0.5"/>
-  <ellipse cx="525" cy="415" rx="6" ry="4" fill="#8a8a7a" opacity="0.5"/>
-  <!-- Flower patches -->
-  <circle cx="350" cy="480" r="3" fill="#ffaacc" opacity="0.7"/>
-  <circle cx="358" cy="476" r="3" fill="#ffbbdd" opacity="0.7"/>
-  <circle cx="345" cy="475" r="2.5" fill="#ff99bb" opacity="0.7"/>
-  <circle cx="580" cy="490" r="3" fill="#ffdd88" opacity="0.7"/>
-  <circle cx="588" cy="486" r="2.5" fill="#ffcc66" opacity="0.7"/>
+  <!-- Stone rune markers on paths -->
+  <rect x="448" y="313" width="8" height="10" rx="1" fill="#3a2a18" opacity="0.55"/>
+  <text x="452" y="322" text-anchor="middle" fill="#c9a84c" font-size="7" opacity="0.45">ᚱ</text>
+  <rect x="530" y="390" width="8" height="10" rx="1" fill="#3a2a18" opacity="0.55"/>
+  <text x="534" y="399" text-anchor="middle" fill="#c9a84c" font-size="7" opacity="0.45">ᚹ</text>
+  <rect x="370" y="390" width="8" height="10" rx="1" fill="#3a2a18" opacity="0.55"/>
+  <text x="374" y="399" text-anchor="middle" fill="#c9a84c" font-size="7" opacity="0.45">ᚠ</text>
 </svg>`;
   }
 
   private buildStars(): string {
-    const stars: string[] = [];
     const positions = [
-      [50, 40], [120, 25], [200, 55], [280, 30], [360, 45], [450, 20],
-      [530, 50], [620, 35], [700, 55], [780, 25], [850, 45],
-      [80, 80], [160, 65], [340, 75], [480, 85], [660, 70], [820, 80],
-      [30, 110], [250, 95], [400, 100], [590, 90], [750, 105], [880, 90],
+      [42, 35, 1.4, 2.8], [118, 22, 1.2, 3.5], [195, 48, 1.0, 2.2],
+      [272, 28, 1.5, 4.0], [354, 42, 1.1, 3.1], [448, 18, 1.6, 2.6],
+      [524, 45, 1.0, 3.8], [614, 30, 1.3, 2.4], [692, 50, 1.2, 3.3],
+      [754, 22, 1.4, 2.9], [72, 72, 1.0, 3.6], [152, 60, 1.2, 2.7],
+      [238, 85, 0.9, 4.2], [332, 68, 1.3, 3.0], [472, 80, 1.1, 2.5],
+      [566, 65, 1.0, 3.7], [648, 82, 1.2, 2.2], [28, 105, 1.1, 4.0],
+      [200, 92, 1.3, 3.4], [390, 98, 0.9, 2.8], [580, 88, 1.1, 3.1],
+      [738, 96, 1.0, 2.6], [870, 72, 1.3, 3.9], [320, 112, 0.8, 4.3],
+      [486, 105, 1.2, 2.9], [700, 108, 0.9, 3.5], [64, 130, 1.0, 2.3],
+      [160, 120, 1.1, 3.8], [420, 118, 0.9, 4.1], [850, 105, 1.2, 2.7],
     ];
-    for (const [x, y] of positions) {
-      const size = Math.random() * 1.5 + 0.8;
-      stars.push(`<circle cx="${x}" cy="${y}" r="${size.toFixed(1)}" fill="white" class="star"/>`);
+    return positions.map(([x, y, r, dur], i) => {
+      const delay = (i * 0.37) % 3;
+      return `<circle cx="${x}" cy="${y}" r="${r}" fill="white" class="star star-twinkle"
+        style="--tw-dur: ${dur}s; --tw-delay: ${delay.toFixed(1)}s;"/>`;
+    }).join('\n    ');
+  }
+
+  private buildBattlements(x: number, y: number, width: number, merlonW: number, gapW: number): string {
+    const result: string[] = [];
+    let cx = x;
+    while (cx < x + width - merlonW) {
+      result.push(`<rect x="${cx}" y="${y}" width="${merlonW}" height="10" fill="#08061a"/>`);
+      cx += merlonW + gapW;
     }
-    return stars.join('\n    ');
+    return result.join('');
   }
 
   private buildStones(cx: number, cy: number, r: number, count: number): string {
@@ -343,41 +582,50 @@ export class CampsiteMap {
       const angle = (i / count) * Math.PI * 2;
       const x = cx + Math.cos(angle) * r;
       const y = cy + Math.sin(angle) * r;
-      stones.push(`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="7" ry="5" fill="#888876" opacity="0.8" transform="rotate(${((angle * 180) / Math.PI).toFixed(0)}, ${x.toFixed(1)}, ${y.toFixed(1)})"/>`);
+      const rot = ((angle * 180) / Math.PI).toFixed(0);
+      stones.push(`<ellipse cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" rx="8" ry="5" fill="#18151e" opacity="0.85" transform="rotate(${rot}, ${x.toFixed(1)}, ${y.toFixed(1)})"/>`);
     }
     return stones.join('\n      ');
   }
 
-  private buildTrees(): string {
-    const treePositions = [
-      [30, 280], [60, 250], [90, 270],
-      [820, 250], [855, 270], [880, 245],
-      [320, 130], [350, 110], [370, 140],
+  private buildForestTrees(): string {
+    const trees = [
+      [765, 230, 1.0], [795, 215, 1.1], [818, 228, 0.9],
+      [835, 208, 1.0], [855, 220, 0.95], [872, 240, 0.85],
+      [750, 270], [810, 258], [840, 262],
     ];
-    return treePositions.map(([x, y]) => {
-      const s = 0.7 + Math.random() * 0.6;
-      return `
-  <g transform="translate(${x}, ${y}) scale(${s.toFixed(2)})">
-    <circle cx="0" cy="-12" r="18" fill="#3a6a2a" opacity="0.85"/>
-    <circle cx="-8" cy="-4" r="14" fill="#4a7a3a" opacity="0.8"/>
-    <circle cx="8" cy="-4" r="14" fill="#3a6a2a" opacity="0.8"/>
-    <circle cx="0" cy="4" r="16" fill="#4a8a3a" opacity="0.75"/>
-    <rect x="-4" y="14" width="8" height="12" rx="2" fill="#5a3a1a" opacity="0.7"/>
-  </g>`;
-    }).join('');
+    return trees.map(([x, y, s = 0.9]) => this.buildGnarledTree(x as number, y as number, s)).join('');
+  }
+
+  private buildZoneTree(x: number, y: number, s: number): string {
+    return this.buildGnarledTree(x, y, s);
+  }
+
+  private buildGnarledTree(x: number, y: number, s: number): string {
+    return `<g transform="translate(${x}, ${y}) scale(${s})">
+      <rect x="-3" y="-28" width="6" height="28" rx="2" fill="#050a03" opacity="0.9"/>
+      <line x1="0" y1="-20" x2="-14" y2="-33" stroke="#050a03" stroke-width="3" stroke-linecap="round"/>
+      <line x1="0" y1="-20" x2="11" y2="-32" stroke="#050a03" stroke-width="2.5" stroke-linecap="round"/>
+      <line x1="0" y1="-12" x2="-9" y2="-22" stroke="#050a03" stroke-width="2" stroke-linecap="round"/>
+      <line x1="0" y1="-16" x2="8" y2="-25" stroke="#050a03" stroke-width="2" stroke-linecap="round"/>
+      <ellipse cx="-11" cy="-37" rx="12" ry="9" fill="#030803"/>
+      <ellipse cx="9" cy="-36" rx="11" ry="9" fill="#020703"/>
+      <ellipse cx="0" cy="-41" rx="13" ry="11" fill="#040904"/>
+      <ellipse cx="-6" cy="-24" rx="9" ry="7" fill="#030803"/>
+    </g>`;
   }
 
   private getFilterForZone(zoneId: string): string {
     const filterMap: Record<string, string> = {
-      carpa: 'dropShadowOlive',
-      fogon: 'dropShadowOrange',
-      cocina: 'dropShadowKhaki',
-      almacenamiento: 'dropShadowBrown',
-      higiene: 'dropShadowBlue',
-      senderos: 'dropShadowGreen',
-      botiquin: 'dropShadowRed',
+      carpa: 'glowGold',
+      fogon: 'glowPurple',
+      cocina: 'glowAmber',
+      almacenamiento: 'glowGold',
+      higiene: 'glowBlue',
+      senderos: 'glowGreen',
+      botiquin: 'glowTeal',
     };
-    return filterMap[zoneId] ?? 'dropShadowOlive';
+    return filterMap[zoneId] ?? 'glowGold';
   }
 
   private attachEventListeners(): void {
@@ -391,22 +639,18 @@ export class CampsiteMap {
 
       zone.addEventListener('mouseenter', () => {
         const fillGroup = zone.querySelector('.zone-fill-group');
-        if (fillGroup) {
-          (fillGroup as SVGGElement).style.filter = `url(#${filterId})`;
-        }
+        if (fillGroup) (fillGroup as SVGGElement).style.filter = `url(#${filterId})`;
       });
-
       zone.addEventListener('mouseleave', () => {
         const fillGroup = zone.querySelector('.zone-fill-group');
         if (fillGroup) {
-          (fillGroup as SVGGElement).style.filter = '';
+          const zId = zone.dataset['zone'];
+          const state = this.stateManager.getState();
+          (fillGroup as SVGGElement).style.filter =
+            zId === state.activeZoneId ? `url(#${filterId})` : '';
         }
       });
-
-      zone.addEventListener('click', () => {
-        this.stateManager.setActiveZone(zoneId);
-      });
-
+      zone.addEventListener('click', () => this.stateManager.setActiveZone(zoneId));
       zone.addEventListener('keydown', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
           e.preventDefault();
@@ -419,13 +663,7 @@ export class CampsiteMap {
   private update(state: AppState): void {
     if (!this.svgEl) return;
 
-    // Update night/day (CSS var on html handles visual, but update SVG ground colors)
-    const groundEl = this.svgEl.querySelector('rect[fill="url(#groundGrad)"]');
-    if (groundEl) {
-      groundEl.setAttribute('opacity', state.nightMode ? '0.3' : '0.5');
-    }
-
-    // Update badges
+    // Update zone badges
     for (const zone of campingZones) {
       const badge = this.svgEl.querySelector(`#badge-${zone.id}`);
       if (!badge) continue;
@@ -434,40 +672,29 @@ export class CampsiteMap {
       const progress = this.stateManager.getZoneProgress(zone.id);
       const pct = progress.total > 0 ? progress.checked / progress.total : 0;
 
-      if (textEl) {
-        textEl.textContent = `${progress.checked}/${progress.total}`;
-      }
+      if (textEl) textEl.textContent = `${progress.checked}/${progress.total}`;
       if (circleEl) {
-        // Color: grey if 0%, zone color if partial, green if complete
-        if (progress.checked === 0) {
-          circleEl.setAttribute('fill', zone.color);
-          circleEl.setAttribute('opacity', '0.7');
-        } else if (progress.checked === progress.total) {
-          circleEl.setAttribute('fill', '#22aa55');
+        if (progress.checked === progress.total && progress.total > 0) {
+          circleEl.setAttribute('fill', '#c9a84c'); // gold when complete
           circleEl.setAttribute('opacity', '1');
         } else {
-          // Interpolate
           circleEl.setAttribute('fill', zone.color);
-          circleEl.setAttribute('opacity', (0.7 + pct * 0.3).toFixed(2));
+          circleEl.setAttribute('opacity', (0.65 + pct * 0.35).toFixed(2));
         }
       }
     }
 
     // Highlight active zone
-    if (this.svgEl) {
-      const allZones = this.svgEl.querySelectorAll<SVGGElement>('.zone-area');
-      allZones.forEach(z => {
-        const fillGroup = z.querySelector('.zone-fill-group');
-        if (fillGroup) {
-          const zoneId = z.dataset['zone'];
-          if (zoneId && zoneId === state.activeZoneId) {
-            const filterId = this.getFilterForZone(zoneId);
-            (fillGroup as SVGGElement).style.filter = `url(#${filterId})`;
-          } else {
-            (fillGroup as SVGGElement).style.filter = '';
-          }
-        }
-      });
-    }
+    const allZones = this.svgEl.querySelectorAll<SVGGElement>('.zone-area');
+    allZones.forEach(z => {
+      const fillGroup = z.querySelector('.zone-fill-group');
+      if (!fillGroup) return;
+      const zoneId = z.dataset['zone'];
+      if (zoneId && zoneId === state.activeZoneId) {
+        (fillGroup as SVGGElement).style.filter = `url(#${this.getFilterForZone(zoneId)})`;
+      } else {
+        (fillGroup as SVGGElement).style.filter = '';
+      }
+    });
   }
 }

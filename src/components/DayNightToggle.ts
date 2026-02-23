@@ -17,12 +17,12 @@ export class DayNightToggle {
   private render(): void {
     this.container.innerHTML = `
       <div class="toggle-wrapper">
-        <span class="toggle-label">☀️</span>
-        <label class="toggle-switch" aria-label="Modo noche">
+        <span class="toggle-label" title="Velas encendidas">🕯️</span>
+        <label class="toggle-switch" aria-label="Medianoche mágica">
           <input type="checkbox" id="night-mode-input"/>
           <span class="toggle-slider"></span>
         </label>
-        <span class="toggle-label">🌙</span>
+        <span class="toggle-label" title="Medianoche mágica">🌑</span>
       </div>
     `;
 
@@ -36,7 +36,6 @@ export class DayNightToggle {
     if (this.inputEl) {
       this.inputEl.checked = state.nightMode;
     }
-    // Apply theme to <html>
     document.documentElement.dataset['theme'] = state.nightMode ? 'night' : '';
   }
 }

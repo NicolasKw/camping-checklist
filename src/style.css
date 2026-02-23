@@ -1,81 +1,76 @@
 /* ============================================================
-   CSS Custom Properties - Temas día/noche
+   Hogwarts Camping — CSS Custom Properties
    ============================================================ */
 :root {
-  --sky-top: #87ceeb;
-  --sky-bottom: #c8e6c9;
-  --ground-color: #8fbc8f;
-  --path-color: #c4a882;
+  /* Noche de velas — ambiente de castillo iluminado */
+  --sky-top: #0c0820;
+  --sky-bottom: #18103a;
+  --ground-color: #0e1608;
+  --path-color: #2a2218;
 
-  --bg-primary: #f5f0e8;
-  --bg-secondary: #fffef7;
-  --bg-card: #ffffff;
-  --text-primary: #2c2c2c;
-  --text-secondary: #666666;
-  --border-color: #d4c9b0;
-  --shadow-color: rgba(0, 0, 0, 0.15);
+  --bg-primary: #09061a;
+  --bg-secondary: #0d0a22;
+  --bg-card: #110e28;
+  --text-primary: #e8d5a0;
+  --text-secondary: #9a8060;
+  --border-color: #362810;
+  --shadow-color: rgba(0, 0, 0, 0.7);
 
-  --header-bg: #3d5a2a;
-  --header-text: #f0ead6;
+  --header-bg: #06040f;
+  --header-text: #c9a84c;
 
-  --sidebar-bg: #faf6ed;
-  --sidebar-border: #d4c9b0;
+  --sidebar-bg: #09061a;
+  --sidebar-border: #362810;
 
-  --progress-bg: rgba(255, 255, 255, 0.25);
-  --progress-fill: #7ec8a4;
-  --progress-text: #f0ead6;
+  --progress-bg: rgba(201, 168, 76, 0.12);
+  --progress-fill: #c9a84c;
+  --progress-text: #c9a84c;
 
-  --btn-primary-bg: #3d5a2a;
-  --btn-primary-text: #f0ead6;
-  --btn-danger-bg: #c0392b;
-  --btn-danger-text: #ffffff;
+  --btn-primary-bg: #3a1558;
+  --btn-primary-text: #c9a84c;
+  --btn-danger-bg: #6b0000;
+  --btn-danger-text: #ffd700;
 
-  --checkbox-color: #3d5a2a;
-  --checked-item-color: #888;
+  --checkbox-color: #c9a84c;
+  --checked-item-color: #4a3820;
 
-  --flame-opacity: 0.9;
-  --star-opacity: 0;
-  --moon-opacity: 0;
+  --flame-opacity: 0.88;
+  --star-opacity: 0.55;
+  --moon-opacity: 0.80;
+
+  --accent-gold: #c9a84c;
+  --accent-gold-dim: #6a5020;
+  --accent-purple: #7b2fbf;
+  --accent-teal: #4ecdc4;
+
+  --font-heading: 'Cinzel Decorative', 'Palatino Linotype', Palatino, Georgia, serif;
+  --font-body: 'Cinzel', 'Palatino Linotype', Palatino, Georgia, serif;
 
   --transition-speed: 300ms;
-  --sidebar-width: 380px;
+  --sidebar-width: 390px;
 }
 
 [data-theme="night"] {
-  --sky-top: #0a0a2e;
-  --sky-bottom: #1a1a4a;
-  --ground-color: #2d4a2d;
-  --path-color: #6b5a3a;
+  /* Medianoche mágica — oscuridad total */
+  --sky-top: #03010a;
+  --sky-bottom: #08050f;
+  --ground-color: #060c04;
 
-  --bg-primary: #1a1a2e;
-  --bg-secondary: #16213e;
-  --bg-card: #0f3460;
-  --text-primary: #e0e0e8;
-  --text-secondary: #a0a0c0;
-  --border-color: #2a2a5a;
-  --shadow-color: rgba(0, 0, 0, 0.4);
+  --bg-primary: #040108;
+  --bg-secondary: #060310;
+  --bg-card: #0a0718;
 
-  --header-bg: #0a0a1e;
-  --header-text: #d0d0f0;
+  --border-color: #281a06;
+  --shadow-color: rgba(0, 0, 0, 0.88);
 
-  --sidebar-bg: #16213e;
-  --sidebar-border: #2a2a5a;
+  --header-bg: #020105;
+  --sidebar-bg: #040108;
 
-  --progress-bg: rgba(255, 255, 255, 0.1);
-  --progress-fill: #4ecdc4;
-  --progress-text: #d0d0f0;
-
-  --btn-primary-bg: #4ecdc4;
-  --btn-primary-text: #0a0a2e;
-  --btn-danger-bg: #e74c3c;
-  --btn-danger-text: #ffffff;
-
-  --checkbox-color: #4ecdc4;
-  --checked-item-color: #5a5a7a;
-
-  --flame-opacity: 1;
   --star-opacity: 1;
   --moon-opacity: 1;
+  --flame-opacity: 1;
+
+  --progress-bg: rgba(201, 168, 76, 0.08);
 }
 
 /* ============================================================
@@ -89,9 +84,9 @@
 
 html, body {
   height: 100%;
-  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-  font-size: 16px;
-  line-height: 1.5;
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
   color: var(--text-primary);
   background: var(--bg-primary);
   transition: background-color var(--transition-speed) ease,
@@ -113,19 +108,33 @@ html, body {
   display: flex;
   align-items: center;
   gap: 16px;
-  padding: 10px 20px;
+  padding: 10px 22px;
   background: var(--header-bg);
   color: var(--header-text);
-  box-shadow: 0 2px 8px var(--shadow-color);
+  border-bottom: 1px solid var(--accent-gold-dim);
+  box-shadow: 0 2px 20px rgba(201, 168, 76, 0.08);
   z-index: 100;
   transition: background-color var(--transition-speed) ease;
   flex-shrink: 0;
 }
 
 .header-left h1 {
-  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
   font-weight: 700;
+  letter-spacing: 0.05em;
   white-space: nowrap;
+  background: linear-gradient(90deg, #a07828, #c9a84c, #f0d878, #c9a84c, #a07828);
+  background-size: 300%;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  animation: goldShimmer 4s linear infinite;
+}
+
+@keyframes goldShimmer {
+  0%   { background-position: 0% }
+  100% { background-position: 300% }
 }
 
 .header-center {
@@ -166,8 +175,9 @@ html, body {
   width: 100%;
   height: auto;
   display: block;
-  border-radius: 12px;
-  box-shadow: 0 4px 20px var(--shadow-color);
+  border-radius: 10px;
+  border: 1px solid var(--accent-gold-dim);
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.6), 0 0 40px rgba(123, 47, 191, 0.08);
 }
 
 /* ============================================================
@@ -181,28 +191,32 @@ html, body {
 
 .progress-bar-track {
   flex: 1;
-  height: 10px;
+  height: 8px;
   background: var(--progress-bg);
-  border-radius: 5px;
+  border-radius: 4px;
+  border: 1px solid var(--accent-gold-dim);
   overflow: hidden;
   min-width: 80px;
 }
 
 .progress-bar-fill {
   height: 100%;
-  background: var(--progress-fill);
-  border-radius: 5px;
+  background: linear-gradient(90deg, #8a6020, #c9a84c, #f0d070);
+  border-radius: 4px;
   width: 0%;
   transition: width 400ms ease-out;
+  box-shadow: 0 0 6px rgba(201, 168, 76, 0.5);
 }
 
 .progress-bar-label {
-  font-size: 0.85rem;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
   font-weight: 600;
   color: var(--progress-text);
   white-space: nowrap;
-  min-width: 45px;
+  min-width: 40px;
   text-align: right;
+  letter-spacing: 0.05em;
 }
 
 /* ============================================================
@@ -211,7 +225,7 @@ html, body {
 #sidebar-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.35);
+  background: rgba(0, 0, 0, 0.55);
   z-index: 200;
   opacity: 0;
   pointer-events: none;
@@ -231,14 +245,14 @@ html, body {
   max-width: 95vw;
   height: 100%;
   background: var(--sidebar-bg);
-  border-left: 1px solid var(--sidebar-border);
+  border-left: 1px solid var(--accent-gold-dim);
   z-index: 300;
   transform: translateX(100%);
   transition: transform var(--transition-speed) cubic-bezier(0.4, 0, 0.2, 1),
               background-color var(--transition-speed) ease;
   display: flex;
   flex-direction: column;
-  box-shadow: -4px 0 20px var(--shadow-color);
+  box-shadow: -6px 0 30px rgba(0, 0, 0, 0.5), -2px 0 0 rgba(201, 168, 76, 0.06);
 }
 
 #sidebar.open {
@@ -248,15 +262,17 @@ html, body {
 .sidebar-header {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding: 20px;
-  border-bottom: 1px solid var(--sidebar-border);
+  gap: 14px;
+  padding: 22px 20px;
+  border-bottom: 1px solid var(--accent-gold-dim);
   flex-shrink: 0;
+  background: linear-gradient(135deg, var(--sidebar-bg), #130f28);
 }
 
 .sidebar-zone-emoji {
   font-size: 2rem;
   line-height: 1;
+  filter: drop-shadow(0 0 6px rgba(201, 168, 76, 0.4));
 }
 
 .sidebar-zone-info {
@@ -265,50 +281,53 @@ html, body {
 }
 
 .sidebar-zone-name {
-  font-size: 1.25rem;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
   font-weight: 700;
-  color: var(--text-primary);
+  letter-spacing: 0.06em;
+  color: var(--accent-gold);
 }
 
 .sidebar-zone-progress {
-  font-size: 0.85rem;
+  font-size: 0.78rem;
   color: var(--text-secondary);
-  margin-top: 2px;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
 }
 
 .sidebar-close-btn {
   background: none;
-  border: none;
-  font-size: 1.5rem;
+  border: 1px solid transparent;
+  font-size: 1.2rem;
   cursor: pointer;
   color: var(--text-secondary);
-  padding: 4px;
+  padding: 6px 8px;
   border-radius: 6px;
   line-height: 1;
-  transition: background-color 150ms ease, color 150ms ease;
+  transition: border-color 150ms ease, color 150ms ease;
 }
 
 .sidebar-close-btn:hover {
-  background: var(--border-color);
-  color: var(--text-primary);
+  border-color: var(--accent-gold-dim);
+  color: var(--accent-gold);
 }
 
 .sidebar-zone-progress-bar {
-  height: 4px;
-  background: var(--border-color);
+  height: 3px;
+  background: #1a1428;
   flex-shrink: 0;
 }
 
 .sidebar-zone-progress-bar-fill {
   height: 100%;
-  background: var(--checkbox-color);
   transition: width 400ms ease-out;
+  box-shadow: 0 0 4px currentColor;
 }
 
 .sidebar-items {
   flex: 1;
   overflow-y: auto;
-  padding: 12px 0;
+  padding: 8px 0;
 }
 
 .checklist-item {
@@ -318,37 +337,44 @@ html, body {
   padding: 12px 20px;
   cursor: pointer;
   transition: background-color 150ms ease;
-  border-radius: 0;
+  border-bottom: 1px solid rgba(54, 40, 16, 0.4);
+}
+
+.checklist-item:last-child {
+  border-bottom: none;
 }
 
 .checklist-item:hover {
-  background: var(--border-color);
+  background: rgba(201, 168, 76, 0.06);
 }
 
 .checklist-item input[type="checkbox"] {
-  width: 20px;
-  height: 20px;
+  width: 18px;
+  height: 18px;
   cursor: pointer;
   accent-color: var(--checkbox-color);
   flex-shrink: 0;
 }
 
 .checklist-item-emoji {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
 }
 
 .checklist-item-name {
   flex: 1;
-  font-size: 0.95rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  letter-spacing: 0.03em;
   color: var(--text-primary);
-  transition: color 200ms ease, text-decoration 200ms ease;
+  transition: color 200ms ease;
   user-select: none;
 }
 
 .checklist-item.checked .checklist-item-name {
   color: var(--checked-item-color);
   text-decoration: line-through;
+  text-decoration-color: var(--accent-gold-dim);
 }
 
 /* ============================================================
@@ -356,12 +382,6 @@ html, body {
    ============================================================ */
 .zone-area {
   cursor: pointer;
-  transition: opacity 150ms ease;
-}
-
-.zone-area:hover .zone-fill,
-.zone-area:focus .zone-fill {
-  opacity: 0.85;
 }
 
 .zone-area:focus {
@@ -372,72 +392,68 @@ html, body {
   transition: filter 150ms ease, opacity 150ms ease;
 }
 
-.zone-area:hover .zone-fill {
-  filter: brightness(1.15);
-}
-
 .zone-label {
   pointer-events: none;
   user-select: none;
 }
 
-/* Progress badge in SVG */
 .zone-badge-circle {
   transition: fill 400ms ease;
 }
 
 .zone-badge-text {
   font-weight: 700;
-  font-size: 11px;
-  fill: white;
+  font-size: 10px;
+  fill: #e8d5a0;
   pointer-events: none;
+  font-family: 'Cinzel', serif;
 }
 
 /* ============================================================
    Buttons
    ============================================================ */
 .icon-btn {
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.25);
-  border-radius: 8px;
+  background: rgba(201, 168, 76, 0.08);
+  border: 1px solid var(--accent-gold-dim);
+  border-radius: 6px;
   padding: 6px 10px;
   cursor: pointer;
-  font-size: 1.1rem;
+  font-size: 1rem;
   line-height: 1;
-  transition: background-color 150ms ease;
+  transition: background-color 150ms ease, box-shadow 150ms ease;
   color: var(--header-text);
 }
 
 .icon-btn:hover {
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(201, 168, 76, 0.16);
+  box-shadow: 0 0 8px rgba(201, 168, 76, 0.2);
 }
 
 .btn {
-  padding: 10px 20px;
+  padding: 10px 22px;
   border: none;
-  border-radius: 8px;
-  font-size: 0.95rem;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
   font-weight: 600;
+  letter-spacing: 0.05em;
   cursor: pointer;
   transition: opacity 150ms ease, transform 100ms ease;
 }
 
-.btn:hover {
-  opacity: 0.9;
-}
-
-.btn:active {
-  transform: scale(0.97);
-}
+.btn:hover { opacity: 0.88; }
+.btn:active { transform: scale(0.97); }
 
 .btn-secondary {
-  background: var(--border-color);
-  color: var(--text-primary);
+  background: #1e1830;
+  color: var(--text-secondary);
+  border: 1px solid var(--accent-gold-dim);
 }
 
 .btn-danger {
   background: var(--btn-danger-bg);
   color: var(--btn-danger-text);
+  border: 1px solid #8b0000;
 }
 
 /* ============================================================
@@ -446,12 +462,11 @@ html, body {
 .toggle-wrapper {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 7px;
 }
 
 .toggle-label {
-  font-size: 0.85rem;
-  color: var(--progress-text);
+  font-size: 0.95rem;
 }
 
 .toggle-switch {
@@ -470,7 +485,8 @@ html, body {
 .toggle-slider {
   position: absolute;
   inset: 0;
-  background: rgba(255, 255, 255, 0.25);
+  background: rgba(201, 168, 76, 0.15);
+  border: 1px solid var(--accent-gold-dim);
   border-radius: 12px;
   cursor: pointer;
   transition: background-color var(--transition-speed) ease;
@@ -479,21 +495,25 @@ html, body {
 .toggle-slider::before {
   content: '';
   position: absolute;
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
   left: 3px;
   top: 3px;
-  background: white;
+  background: var(--accent-gold);
   border-radius: 50%;
   transition: transform var(--transition-speed) ease;
+  box-shadow: 0 0 6px rgba(201, 168, 76, 0.5);
 }
 
 .toggle-switch input:checked + .toggle-slider {
-  background: #4ecdc4;
+  background: rgba(78, 205, 196, 0.15);
+  border-color: #2a6060;
 }
 
 .toggle-switch input:checked + .toggle-slider::before {
   transform: translateX(20px);
+  background: #4ecdc4;
+  box-shadow: 0 0 6px rgba(78, 205, 196, 0.6);
 }
 
 /* ============================================================
@@ -502,7 +522,7 @@ html, body {
 .modal {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0.7);
   z-index: 500;
   display: flex;
   align-items: center;
@@ -516,23 +536,27 @@ html, body {
 
 .modal-content {
   background: var(--bg-card);
-  border-radius: 12px;
-  padding: 28px;
+  border: 1px solid var(--accent-gold-dim);
+  border-radius: 10px;
+  padding: 30px;
   max-width: 380px;
   width: 100%;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 20px rgba(201, 168, 76, 0.06);
 }
 
 .modal-content h2 {
-  font-size: 1.25rem;
-  margin-bottom: 10px;
-  color: var(--text-primary);
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  letter-spacing: 0.06em;
+  margin-bottom: 12px;
+  color: var(--accent-gold);
 }
 
 .modal-content p {
   color: var(--text-secondary);
-  margin-bottom: 24px;
-  font-size: 0.9rem;
+  margin-bottom: 26px;
+  font-size: 0.88rem;
+  line-height: 1.7;
 }
 
 .modal-actions {
@@ -542,65 +566,60 @@ html, body {
 }
 
 /* ============================================================
-   Fire Animation
+   Flame Animation — Colores mágicos (set via SVG fill)
    ============================================================ */
 .flame {
-  transform-origin: center bottom;
   animation-timing-function: ease-in-out;
   animation-iteration-count: infinite;
   animation-direction: alternate;
   opacity: var(--flame-opacity);
 }
 
-.flame-1 {
-  animation: flicker1 1.1s infinite alternate ease-in-out;
-}
-.flame-2 {
-  animation: flicker2 1.4s 0.2s infinite alternate ease-in-out;
-}
-.flame-3 {
-  animation: flicker3 1.8s 0.4s infinite alternate ease-in-out;
-}
+.flame-1 { animation: flicker1 1.1s infinite alternate ease-in-out; }
+.flame-2 { animation: flicker2 1.4s 0.2s infinite alternate ease-in-out; }
+.flame-3 { animation: flicker3 1.8s 0.4s infinite alternate ease-in-out; }
 
 @keyframes flicker1 {
   0%   { transform: scaleY(1) scaleX(1) translateY(0); }
-  40%  { transform: scaleY(1.08) scaleX(0.93) translateY(-2px); }
-  100% { transform: scaleY(0.9) scaleX(1.07) translateY(1px); }
+  40%  { transform: scaleY(1.1) scaleX(0.92) translateY(-2px); }
+  100% { transform: scaleY(0.88) scaleX(1.08) translateY(1px); }
 }
 @keyframes flicker2 {
-  0%   { transform: scaleY(0.95) scaleX(1.05) rotate(-3deg); }
-  50%  { transform: scaleY(1.1) scaleX(0.95) rotate(2deg); }
-  100% { transform: scaleY(0.88) scaleX(1.1) rotate(-1deg); }
+  0%   { transform: scaleY(0.94) scaleX(1.06) rotate(-3deg); }
+  50%  { transform: scaleY(1.12) scaleX(0.94) rotate(2deg); }
+  100% { transform: scaleY(0.86) scaleX(1.12) rotate(-1deg); }
 }
 @keyframes flicker3 {
   0%   { transform: scaleY(1) rotate(2deg) translateY(0); }
-  60%  { transform: scaleY(1.12) rotate(-3deg) translateY(-3px); }
-  100% { transform: scaleY(0.92) rotate(1deg) translateY(2px); }
+  60%  { transform: scaleY(1.14) rotate(-3deg) translateY(-3px); }
+  100% { transform: scaleY(0.9) rotate(1deg) translateY(2px); }
 }
 
-/* Glow pulse on fogon area in night mode */
 [data-theme="night"] .fogon-glow {
-  animation: glowPulse 2s infinite alternate ease-in-out;
+  animation: magicGlow 2.2s infinite alternate ease-in-out;
 }
 
-@keyframes glowPulse {
-  from { opacity: 0.5; }
-  to   { opacity: 1; }
-}
-
-/* ============================================================
-   Ambient Animations (birds, clouds)
-   ============================================================ */
-.bird-path {
-  fill: none;
+@keyframes magicGlow {
+  from { opacity: 0.1; }
+  to   { opacity: 0.3; }
 }
 
 /* ============================================================
-   Stars (night mode)
+   Stars
    ============================================================ */
 .star {
   opacity: var(--star-opacity);
   transition: opacity var(--transition-speed) ease;
+}
+
+/* Twinkling stars */
+.star-twinkle {
+  animation: twinkle var(--tw-dur, 3s) var(--tw-delay, 0s) infinite alternate ease-in-out;
+}
+
+@keyframes twinkle {
+  from { opacity: calc(var(--star-opacity) * 0.4); }
+  to   { opacity: var(--star-opacity); }
 }
 
 /* ============================================================
@@ -636,6 +655,7 @@ html, body {
   body {
     background: white;
     color: black;
+    font-family: Georgia, serif;
   }
 
   .print-list {
@@ -649,7 +669,8 @@ html, body {
   }
 
   .print-zone h3 {
-    font-size: 1rem;
+    font-size: 0.95rem;
+    font-family: Georgia, serif;
     border-bottom: 1px solid #ccc;
     padding-bottom: 4px;
     margin-bottom: 8px;
@@ -660,14 +681,14 @@ html, body {
     align-items: center;
     gap: 8px;
     padding: 3px 0;
-    font-size: 0.85rem;
+    font-size: 0.82rem;
   }
 
   .print-checkbox {
-    width: 14px;
-    height: 14px;
+    width: 13px;
+    height: 13px;
     border: 1px solid #333;
-    border-radius: 3px;
+    border-radius: 2px;
     flex-shrink: 0;
   }
 
@@ -675,22 +696,18 @@ html, body {
     content: '✓';
     display: block;
     text-align: center;
-    line-height: 14px;
-    font-size: 10px;
+    line-height: 13px;
+    font-size: 9px;
   }
 }
 
 /* ============================================================
-   Scrollbar Styling
+   Scrollbar
    ============================================================ */
-.sidebar-items::-webkit-scrollbar {
-  width: 6px;
-}
-.sidebar-items::-webkit-scrollbar-track {
-  background: transparent;
-}
+.sidebar-items::-webkit-scrollbar { width: 5px; }
+.sidebar-items::-webkit-scrollbar-track { background: transparent; }
 .sidebar-items::-webkit-scrollbar-thumb {
-  background: var(--border-color);
+  background: var(--accent-gold-dim);
   border-radius: 3px;
 }
 
@@ -698,16 +715,7 @@ html, body {
    Responsive
    ============================================================ */
 @media (max-width: 600px) {
-  :root {
-    --sidebar-width: 100vw;
-  }
-
-  .header-left h1 {
-    font-size: 1rem;
-  }
-
-  #app-header {
-    padding: 8px 12px;
-    gap: 8px;
-  }
+  :root { --sidebar-width: 100vw; }
+  .header-left h1 { font-size: 0.95rem; }
+  #app-header { padding: 8px 12px; gap: 8px; }
 }
